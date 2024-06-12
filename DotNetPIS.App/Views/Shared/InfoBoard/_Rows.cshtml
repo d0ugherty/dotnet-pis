@@ -1,0 +1,30 @@
+@using System.Collections
+@using DotNetPIS.Domain.Models.SEPTA;
+
+@model List<Arrival>
+
+@{
+    foreach (var arrival in Model)
+    {
+        <tr>
+            <td>
+                @arrival.DepartTime
+            </td>
+            <td>
+                @arrival.TrainId
+            </td>
+            <td>
+                @arrival.ServiceType
+            </td>
+            <td>
+                @arrival.Destination
+            </td>
+            <td>
+                @arrival.Status
+            </td>
+            <td>
+                @arrival.Track  
+            </td>
+        </tr>
+    }
+}

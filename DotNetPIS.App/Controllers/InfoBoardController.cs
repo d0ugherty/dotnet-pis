@@ -1,13 +1,11 @@
+using DotNetPIS.Domain.Models.SEPTA;
 using DotNetPIS.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.App.Controllers
 {
     public class InfoBoardController : Controller
     {
-
-
         private readonly SeptaRegionalRailService _septaRrService;
         
         public InfoBoardController( SeptaRegionalRailService septaRrService)
@@ -17,11 +15,15 @@ namespace DotNetPIS.App.Controllers
 
         public async Task<ActionResult> InfoBoard()
         {
-            var arrivals = await _septaRrService.GetRegionalRailArrivals("30th Street Station", "N");
+            string stationName = "30th Street Station";
+            string direction = "N";
             
-            Console.WriteLine($"ARRIVALS: {arrivals[0]}");
+            List<Arrival> arrivals = await _septaRrService.GetRegionalRailArrivals(stationName, direction);
 
-            return Ok(new { Arrivals = arrivals });
+            ViewData["Arrivals"] = arrivals;
+            ViewData["Station Name"] = stationName;
+            
+            return View();
         }
     }
 }

@@ -17,13 +17,22 @@ public class SeptaRegionalRailService
     {
         JObject response = await _septaApiClient.GetRegionalRailArrivals(stationName, direction, results);
 
-        var data = response.Properties().First();
+        JProperty data = response.Properties().First();
 
         var stationArrivals = new List<Arrival>();
         
-        var northboundArrivals = data.Value[0]?["Northbound"];
+        JToken? arrivals;
 
-        foreach (var trainData in northboundArrivals!)
+        if (direction.Equals("N"))
+        {
+            arrivals = data.Value[0]!["Northbound"];
+        }
+        else
+        {
+            arrivals = data.Value[0]!["Southbound"];
+        }
+
+        foreach (var trainData in arrivals!)
         {
             var arrival = new Arrival
             {
@@ -36,8 +45,8 @@ public class SeptaRegionalRailService
                 Status = trainData["status"]?.ToString(),
                 ServiceType = trainData["service_type"]?.ToString(),
                 NextStation = trainData["next_station"]?.ToString(),
-                SchedTime = DateTime.Parse(trainData["sched_time"]?.ToString()),
-                DepartTime = DateTime.Parse(trainData["depart_time"]?.ToString()),
+                SchedTime = DateTime.Parse(trainData["sched_time"]?.ToString() ?? string.Empty),
+                DepartTime = DateTime.Parse(trainData["depart_time"]?.ToString() ?? string.Empty),
                 Track = trainData["track"]?.ToString(),
                 TrackChange = trainData["track_change"]?.ToString(),
                 Platform = trainData["platform"]?.ToString(),

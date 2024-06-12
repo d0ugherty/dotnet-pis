@@ -1,0 +1,11 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using DotNetPIS.Domain.Models.SEPTA;
+
+@model List<Arrival>
+
+<table id="tbl-arrivals">
+    <partial name="InfoBoard/_Header"/>
+        <tbody id="tbl-body-arrivals">
+            @await Html.PartialAsync("InfoBoard/_Rows", Model)
+        </tbody>
+</table>

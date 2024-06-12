@@ -1,7 +1,14 @@
+@using DotNetPIS.Domain.Models.SEPTA
 
 @{
     ViewData["Title"] = "InfoBoard";
+    var arrivals = ViewData["Arrivals"] as List<Arrival> ?? new List<Arrival>();
 }
 
-<h1>InfoBoard</h1>
+<h1>Train Information for @ViewData["Station Name"]</h1>
+
+@await Html.PartialAsync("../Shared/InfoBoard/_Arrivals", arrivals)
+
+
+
 
