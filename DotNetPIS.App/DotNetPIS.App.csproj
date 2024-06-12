@@ -7,6 +7,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Htmx" Version="1.8.0" />
+    <PackageReference Include="Htmx.TagHelpers" Version="1.8.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.5.24306.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.5.24306.3">
       <PrivateAssets>all</PrivateAssets>

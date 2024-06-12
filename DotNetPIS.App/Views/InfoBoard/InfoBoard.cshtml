@@ -3,11 +3,12 @@
 @{
     ViewData["Title"] = "InfoBoard";
     var arrivals = ViewData["Arrivals"] as List<Arrival> ?? new List<Arrival>();
+    var stationName = ViewData["Station Name"] as string;
 }
 
-<h1>Train Information for @ViewData["Station Name"]</h1>
+<h1>Train Information for @stationName</h1>
 
-@await Html.PartialAsync("../Shared/InfoBoard/_Arrivals", arrivals)
+@await Html.PartialAsync("../Shared/InfoBoard/_Arrivals", arrivals, ViewData)
 
 
 

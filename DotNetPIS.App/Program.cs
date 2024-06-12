@@ -1,5 +1,6 @@
 using DotNetPIS.ApiClient;
 using DotNetPIS.Data;
+using DotNetPIS.Data.Repositories;
 using DotNetPIS.Domain.Interfaces;
 using DotNetPIS.Domain.Services;
 using Microsoft.EntityFrameworkCore;
@@ -17,8 +18,10 @@ builder.Services.AddDbContext<Context>(opt =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<SeptaApiClient>();
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 builder.Services.AddScoped<ISeptaApiClient, SeptaApiClient>();
 builder.Services.AddScoped<SeptaRegionalRailService>();
+builder.Services.AddScoped<StopService>();
 
 var app = builder.Build();
 

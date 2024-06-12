@@ -13,10 +13,12 @@ public class StopService
         _stopRepo = stopRepo;
     }
 
-    public async Task<List<Stop>> GetStopsByAgencyAndRouteType(int agencyId, int routeType)
+    public async Task<List<Stop>> GetStopsByAgencyAndRouteType(string agencyName, int routeType)
     {
         List<Stop> stops = await _stopRepo.GetAll()
-            .Where(s => s.StopTimes.Any(st => st.Trip.Route.AgencyId == agencyId && st.Trip.Route.Type == routeType))
+            .Where(s => s.StopTimes.Any(st => st.Trip.Route.Agency != null && 
+                                              st.Trip.Route.Agency.Name.Equals(agencyName) 
+                                              && st.Trip.Route.Type == routeType))
             .Distinct()
             .ToListAsync();
 
