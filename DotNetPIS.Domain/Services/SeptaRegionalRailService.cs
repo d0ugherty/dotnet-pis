@@ -1,3 +1,4 @@
+using System.Text;
 using DotNetPIS.Domain.Interfaces;
 using DotNetPIS.Domain.Models.SEPTA;
 using Newtonsoft.Json.Linq;
@@ -20,7 +21,7 @@ public class SeptaRegionalRailService
         JProperty data = response.Properties().First();
 
         var stationArrivals = new List<Arrival>();
-        
+
         JToken? arrivals;
 
         if (direction.Equals("N"))
@@ -38,15 +39,15 @@ public class SeptaRegionalRailService
             {
                 Direction = trainData["direction"]?.ToString(),
                 Path = trainData["path"]?.ToString(),
-                TrainId = trainData["train_id"]?.ToString(),
+                TrainId = RemoveSpecialCharacters(trainData["train_id"]?.ToString() ?? string.Empty),
                 Origin = trainData["origin"]?.ToString(),
                 Destination = trainData["destination"]?.ToString(),
                 Line = trainData["line"]?.ToString(),
                 Status = trainData["status"]?.ToString(),
                 ServiceType = trainData["service_type"]?.ToString(),
                 NextStation = trainData["next_station"]?.ToString(),
-                SchedTime = DateTime.Parse(trainData["sched_time"]?.ToString() ?? string.Empty),
-                DepartTime = DateTime.Parse(trainData["depart_time"]?.ToString() ?? string.Empty),
+                SchedTime = DateTime.Parse(trainData["sched_time"]?.ToString() ?? string.Empty).ToShortTimeString(),
+                DepartTime = DateTime.Parse(trainData["depart_time"]?.ToString() ?? string.Empty).ToShortTimeString(),
                 Track = trainData["track"]?.ToString(),
                 TrackChange = trainData["track_change"]?.ToString(),
                 Platform = trainData["platform"]?.ToString(),
@@ -54,6 +55,21 @@ public class SeptaRegionalRailService
             };
             stationArrivals.Add(arrival);
         }
+
         return stationArrivals;
+    }
+
+    private static string RemoveSpecialCharacters(string str)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        foreach (char c in str)
+        {
+            if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            {
+                stringBuilder.Append(c);
+            }
+        }
+        return stringBuilder.ToString();
     }
 }

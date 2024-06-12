@@ -16,9 +16,14 @@ namespace DotNetPIS.App.Controllers
         public async Task<ActionResult> InfoBoard()
         {
             string stationName = "30th Street Station";
-            string direction = "N";
             
-            List<Arrival> arrivals = await _septaRrService.GetRegionalRailArrivals(stationName, direction);
+            List<Arrival> arrivals = new List<Arrival>();
+
+            var northbound = await _septaRrService.GetRegionalRailArrivals(stationName, "N", 5);
+            var southbound = await _septaRrService.GetRegionalRailArrivals(stationName, "S", 5);
+            
+            arrivals.AddRange(northbound);
+            arrivals.AddRange(southbound);
 
             ViewData["Arrivals"] = arrivals;
             ViewData["Station Name"] = stationName;

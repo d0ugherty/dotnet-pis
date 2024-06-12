@@ -11,8 +11,8 @@ public class Arrival
     public string? Status { get; set; }
     public string? ServiceType { get; set; }
     public string? NextStation { get; set; }
-    public DateTime? SchedTime { get; set; }
-    public DateTime? DepartTime { get; set; }
+    public string SchedTime { get; set; }
+    public string DepartTime { get; set; }
     public string? Track { get; set; }
     public string? TrackChange { get; set; }
     public string? Platform { get; set; }
