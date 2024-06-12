@@ -5,7 +5,7 @@
 
 Data
 data
-DotNetPIS.Data/*.db
+DotNetPIS.Data/*.db*
 # dotenv files
 .env
 
