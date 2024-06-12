@@ -14,4 +14,10 @@
     <Folder Include="Models\GTFS\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.EntityFrameworkCore">
+      <HintPath>..\..\..\..\..\..\..\home\thom\.nuget\packages\microsoft.entityframeworkcore\9.0.0-preview.5.24306.3\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

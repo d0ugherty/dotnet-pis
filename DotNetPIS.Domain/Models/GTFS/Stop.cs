@@ -20,15 +20,10 @@ public class Stop
 
 	public string? Url { get; set; }
 
-	public List<StopTime> StopTimes { get; set; }
+	public List<StopTime> StopTimes { get; set; } = new List<StopTime>();
 
 	[ForeignKey("Source")] 
 	public int SourceId { get; set; }
 
 	public required Source Source { get; set; }
-
-	public Stop()
-	{
-		StopTimes = new List<StopTime>();
-	}
 }
