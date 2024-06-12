@@ -17,12 +17,9 @@ namespace DotNetPIS.App.Controllers
 
         public async Task<ActionResult> InfoBoard()
         {
-            var arrivals = await _septaRrService.GetRegionalRailArrivals("30th Street Station", "N", 10);
-
-            foreach (var arrival in arrivals)
-            {
-                Console.WriteLine(arrival);
-            }
+            var arrivals = await _septaRrService.GetRegionalRailArrivals("30th Street Station", "N");
+            
+            Console.WriteLine($"ARRIVALS: {arrivals[0]}");
 
             return Ok(new { Arrivals = arrivals });
         }

@@ -21,9 +21,9 @@ public class SeptaRegionalRailService
 
         var stationArrivals = new List<Arrival>();
         
-        var northboundArrivals = data.Value["Northbound"];
+        var northboundArrivals = data.Value[0]?["Northbound"];
 
-        foreach (var trainData in northboundArrivals)
+        foreach (var trainData in northboundArrivals!)
         {
             var arrival = new Arrival
             {
@@ -46,12 +46,5 @@ public class SeptaRegionalRailService
             stationArrivals.Add(arrival);
         }
         return stationArrivals;
-    }
-
-    private static void ParseStationNameAndTime(JProperty data, StationArrivals stationArrivals)
-    {
-        var stationNameParts = data.Name.Split(": ");
-        stationArrivals.StationName = stationNameParts[0];
-        stationArrivals.Time = DateTime.Parse(stationNameParts[1]);
     }
 }
