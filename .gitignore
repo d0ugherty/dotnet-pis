@@ -3,8 +3,8 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
-DotNetPIS.Test
 Data
+DotNetPIS.Data/*.db
 # dotenv files
 .env
 

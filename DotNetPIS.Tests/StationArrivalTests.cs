@@ -1,6 +1,7 @@
 using DotNetPIS.Domain.Models.SEPTA;
 using Newtonsoft.Json.Linq;
 
+
 namespace DotNetPIS.Tests;
 
 public class StationArrivalTests
@@ -66,8 +67,8 @@ public class StationArrivalTests
         Assert.Equal("3 min", firstArrival.Status);
         Assert.Equal("LOCAL", firstArrival.ServiceType);
         Assert.Equal("30th Street Gray", firstArrival.NextStation);
-        Assert.Equal(new DateTime(2024, 6, 11, 16, 39, 1), firstArrival.SchedTime);
-        Assert.Equal(new DateTime(2024, 6, 11, 16, 40, 0), firstArrival.DepartTime);
+        Assert.Equal(new DateTime(2024, 6, 11, 16, 39, 1).ToShortTimeString(), firstArrival.SchedTime);
+        Assert.Equal(new DateTime(2024, 6, 11, 16, 40, 0).ToShortTimeString(), firstArrival.DepartTime);
         Assert.Equal("1", firstArrival.Track);
         Assert.Equal("", firstArrival.Platform);
 
@@ -80,8 +81,8 @@ public class StationArrivalTests
         Assert.Equal("Lansdale/Doylestown", secondArrival.Line);
         Assert.Equal("2 min", secondArrival.Status);
         Assert.Equal("LOCAL", secondArrival.ServiceType);
-        Assert.Equal(new DateTime(2024, 6, 11, 16, 47, 0), secondArrival.SchedTime);
-        Assert.Equal(new DateTime(2024, 6, 11, 16, 48, 0), secondArrival.DepartTime);
+        Assert.Equal(new DateTime(2024, 6, 11, 16, 47, 0).ToShortTimeString(), secondArrival.SchedTime);
+        Assert.Equal(new DateTime(2024, 6, 11, 16, 48, 0).ToShortTimeString(), secondArrival.DepartTime);
         Assert.Equal("2", secondArrival.Track);
     }
 
@@ -105,8 +106,7 @@ public class StationArrivalTests
                     Status = arrival["status"]?.ToString(),
                     ServiceType = arrival["service_type"]?.ToString(),
                     NextStation = arrival["next_station"]?.ToString(),
-                    SchedTime = DateTime.Parse(arrival["sched_time"]?.ToString() ?? throw new InvalidOperationException()),
-                    DepartTime = DateTime.Parse(arrival["depart_time"]?.ToString() ?? throw new InvalidOperationException()),
+                    DepartTime = DateTime.Parse(arrival["depart_time"]?.ToString()).ToShortTimeString(),
                     Track = arrival["track"]?.ToString(),
                     TrackChange = arrival["track_change"]?.ToString(),
                     Platform = arrival["platform"]?.ToString(),

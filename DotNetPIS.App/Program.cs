@@ -1,8 +1,18 @@
 using DotNetPIS.ApiClient;
+using DotNetPIS.Data;
 using DotNetPIS.Domain.Interfaces;
 using DotNetPIS.Domain.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<Context>(opt =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=../DotNetPIS.Data/dotnetpis.db";
+    opt.UseSqlite(connectionString,  x => x.MigrationsAssembly("DotNetPIS.Data"));
+    opt.EnableSensitiveDataLogging();
+});
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
