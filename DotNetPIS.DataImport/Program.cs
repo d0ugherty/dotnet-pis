@@ -6,7 +6,7 @@ internal class Program
     {
         public static void Main(string[] args)
         {
-            var connectionString = "Data Source=../DotNetPIS.Data/gtfs.db";
+            var connectionString = "Data Source=../DotNetPIS.Data/dotnetpis.db";
 		    
             var optionsBuilder = new DbContextOptionsBuilder<Context>();
 		    
