@@ -36,21 +36,21 @@ public class SeptaRegionalRailService : BaseJsonService
         {
           var arrival = new Arrival
                 {
-                    Direction = GetStringValue(trainData, "direction"),
-                    Path = GetStringValue(trainData, "path"),
-                    TrainId = RemoveSpecialCharacters(GetStringValue(trainData, "train_id")),
-                    Origin = GetStringValue(trainData, "origin"),
-                    Destination = GetStringValue(trainData, "destination"),
-                    Line = GetStringValue(trainData, "line"),
-                    Status = GetStringValue(trainData, "status"),
-                    ServiceType = GetStringValue(trainData, "service_type"),
-                    NextStation = GetStringValue(trainData, "next_station"),
-                    SchedTime = GetDateTimeValue(trainData, "sched_time"),
-                    DepartTime = GetDateTimeValue(trainData, "depart_time"),
-                    Track = GetStringValue(trainData, "track"),
-                    TrackChange = GetStringValue(trainData, "track_change"),
-                    Platform = GetStringValue(trainData, "platform"),
-                    PlatformChange = GetStringValue(trainData, "platform_change")
+                    Direction = ParseStringValue(trainData, "direction"),
+                    Path = ParseStringValue(trainData, "path"),
+                    TrainId = RemoveSpecialCharacters(ParseStringValue(trainData, "train_id")),
+                    Origin = ParseStringValue(trainData, "origin"),
+                    Destination = ParseStringValue(trainData, "destination"),
+                    Line = ParseStringValue(trainData, "line"),
+                    Status = ParseStringValue(trainData, "status"),
+                    ServiceType = ParseStringValue(trainData, "service_type"),
+                    NextStation = ParseStringValue(trainData, "next_station"),
+                    SchedTime = ParseDateTimeString(trainData, "sched_time"),
+                    DepartTime = ParseDateTimeString(trainData, "depart_time"),
+                    Track = ParseStringValue(trainData, "track"),
+                    TrackChange = ParseStringValue(trainData, "track_change"),
+                    Platform = ParseStringValue(trainData, "platform"),
+                    PlatformChange = ParseStringValue(trainData, "platform_change")
                 };
             stationArrivals.Add(arrival);
         }
@@ -71,23 +71,56 @@ public class SeptaRegionalRailService : BaseJsonService
         {
             var train = new TrainView
             {
-                Latitude = GetFloatValue(trainData, "lat"),
-                Longitude = GetFloatValue(trainData, "lon"),
-                TrainNumber = RemoveSpecialCharacters(GetStringValue(trainData, "trainno")),
-                ServiceType = GetStringValue(trainData, "service"),
-                Destination = GetStringValue(trainData, "destination"),
-                CurrentStop = GetStringValue(trainData, "currentstop"),
-                NextStop = GetStringValue(trainData, "nextstop"),
-                Line = GetStringValue(trainData, "line"),
-                Consist = GetStringValue(trainData, "consist"),
-                Heading = GetFloatValue(trainData, "heading"),
-                MinutesLate = GetIntValue(trainData, "late"),
-                Source = GetStringValue(trainData, "SOURCE"),
-                Track = GetStringValue(trainData, "TRACK"),
-                TrackChange = GetStringValue(trainData, "TRACK_CHANGE")
+                Latitude = ParseFloatValue(trainData, "lat"),
+                Longitude = ParseFloatValue(trainData, "lon"),
+                TrainNumber = RemoveSpecialCharacters(ParseStringValue(trainData, "trainno")),
+                ServiceType = ParseStringValue(trainData, "service"),
+                Destination = ParseStringValue(trainData, "destination"),
+                CurrentStop = ParseStringValue(trainData, "currentstop"),
+                NextStop = ParseStringValue(trainData, "nextstop"),
+                Line = ParseStringValue(trainData, "line"),
+                Consist = ParseStringValue(trainData, "consist"),
+                Heading = ParseFloatValue(trainData, "heading"),
+                MinutesLate = ParseIntValue(trainData, "late"),
+                Source = ParseStringValue(trainData, "SOURCE"),
+                Track = ParseStringValue(trainData, "TRACK"),
+                TrackChange = ParseStringValue(trainData, "TRACK_CHANGE")
             };
             trainsOnSystem.Add(train);
         }
         return trainsOnSystem;
+    }
+
+    public async Task<List<NextToArrive>> GetNextToArrive(string startingStation, string endingStation, int results)
+    {
+        JObject response = await _septaApiClient.GetNextToArrive(startingStation, endingStation, results);
+        
+        JProperty data = response.Properties().First();
+
+        JToken nextToArrive = data.Value;
+
+        var nextTrainsToArrive = new List<NextToArrive>();
+
+        foreach (var trainData in nextToArrive)
+        {
+            var train = new NextToArrive
+            {
+                OriginTrain = ParseStringValue(trainData, "orig_train"),
+                OriginLine = ParseStringValue(trainData, "orig_line"),
+                OriginDepartureTime = ParseStringValue(trainData, "orig_departure_time"),
+                OriginArrivalTime = ParseStringValue(trainData, "orig_arrival_time"),
+                OriginDelay = ParseStringValue(trainData, "orig_delay"),
+                TerminatingTrain = ParseStringValue(trainData, "term_train"),
+                TerminatingLine = ParseStringValue(trainData, "term_line"),
+                TerminatingDepartureTime = ParseStringValue(trainData, "term_depart_time"),
+                TerminatingArrivalTime = ParseStringValue(trainData, "term_arrival_time"),
+                Connection = ParseStringValue(trainData, "Connection"),
+                TerminatingDelay = ParseStringValue(trainData, "term_delay"),
+                IsDirect = ParseBooleanValue(trainData, "is_direct")
+            };
+            nextTrainsToArrive.Add(train);
+        }
+
+        return nextTrainsToArrive;
     }
 }

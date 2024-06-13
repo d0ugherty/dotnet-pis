@@ -5,12 +5,12 @@ namespace DotNetPIS.Domain.Services;
 
 public abstract class BaseJsonService
 {
-    protected string GetStringValue(JToken token, string propertyName)
+    protected string ParseStringValue(JToken token, string propertyName)
     {
         return token[propertyName]?.ToString() ?? string.Empty;
     }
 
-    protected float GetFloatValue(JToken token, string propertyName)
+    protected float ParseFloatValue(JToken token, string propertyName)
     {
         if (token[propertyName] != null && float.TryParse(token[propertyName]?.ToString(), out float value))
         {
@@ -19,16 +19,16 @@ public abstract class BaseJsonService
         return 0.0f;
     }
 
-    protected string GetDateTimeValue(JToken token, string propertyName)
+    protected string ParseDateTimeString(JToken token, string propertyName)
     {
-        string timeProperty = GetStringValue(token, propertyName);
+        string timeProperty = ParseStringValue(token, propertyName);
         
         string timeString = DateTime.Parse(timeProperty).ToShortTimeString();
 
         return timeString;
     }
 
-    protected int GetIntValue(JToken token, string propertyName)
+    protected int ParseIntValue(JToken token, string propertyName)
     {
         int value = 0;
         
@@ -38,6 +38,15 @@ public abstract class BaseJsonService
         }
 
         return value;
+    }
+
+    protected bool ParseBooleanValue(JToken token, string propertyName)
+    {
+        string boolString = ParseStringValue(token, propertyName);
+
+        bool result = bool.Parse(boolString);
+
+        return result;
     }
     
     protected static string RemoveSpecialCharacters(string str)
