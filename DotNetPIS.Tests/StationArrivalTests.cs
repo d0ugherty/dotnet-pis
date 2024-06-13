@@ -106,7 +106,7 @@ public class StationArrivalTests
                     Status = arrival["status"]?.ToString(),
                     ServiceType = arrival["service_type"]?.ToString(),
                     NextStation = arrival["next_station"]?.ToString(),
-                    DepartTime = DateTime.Parse(arrival["depart_time"]?.ToString()).ToShortTimeString(),
+                    DepartTime = DateTime.Parse(arrival["depart_time"]?.ToString() ?? string.Empty).ToShortTimeString(),
                     Track = arrival["track"]?.ToString(),
                     TrackChange = arrival["track_change"]?.ToString(),
                     Platform = arrival["platform"]?.ToString(),

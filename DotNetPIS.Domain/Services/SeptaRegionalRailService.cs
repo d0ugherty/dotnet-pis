@@ -1,11 +1,10 @@
-using System.Text;
 using DotNetPIS.Domain.Interfaces;
 using DotNetPIS.Domain.Models.SEPTA;
 using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.Domain.Services;
 
-public class SeptaRegionalRailService
+public class SeptaRegionalRailService : BaseJsonService
 {
     private readonly ISeptaApiClient _septaApiClient;
 
@@ -35,41 +34,60 @@ public class SeptaRegionalRailService
 
         foreach (var trainData in arrivals!)
         {
-            var arrival = new Arrival
-            {
-                Direction = trainData["direction"]?.ToString(),
-                Path = trainData["path"]?.ToString(),
-                TrainId = RemoveSpecialCharacters(trainData["train_id"]?.ToString() ?? string.Empty),
-                Origin = trainData["origin"]?.ToString(),
-                Destination = trainData["destination"]?.ToString(),
-                Line = trainData["line"]?.ToString(),
-                Status = trainData["status"]?.ToString(),
-                ServiceType = trainData["service_type"]?.ToString(),
-                NextStation = trainData["next_station"]?.ToString(),
-                SchedTime = DateTime.Parse(trainData["sched_time"]?.ToString() ?? string.Empty).ToShortTimeString(),
-                DepartTime = DateTime.Parse(trainData["depart_time"]?.ToString() ?? string.Empty).ToShortTimeString(),
-                Track = trainData["track"]?.ToString(),
-                TrackChange = trainData["track_change"]?.ToString(),
-                Platform = trainData["platform"]?.ToString(),
-                PlatformChange = trainData["platform_change"]?.ToString()
-            };
+          var arrival = new Arrival
+                {
+                    Direction = GetStringValue(trainData, "direction"),
+                    Path = GetStringValue(trainData, "path"),
+                    TrainId = RemoveSpecialCharacters(GetStringValue(trainData, "train_id")),
+                    Origin = GetStringValue(trainData, "origin"),
+                    Destination = GetStringValue(trainData, "destination"),
+                    Line = GetStringValue(trainData, "line"),
+                    Status = GetStringValue(trainData, "status"),
+                    ServiceType = GetStringValue(trainData, "service_type"),
+                    NextStation = GetStringValue(trainData, "next_station"),
+                    SchedTime = GetDateTimeValue(trainData, "sched_time"),
+                    DepartTime = GetDateTimeValue(trainData, "depart_time"),
+                    Track = GetStringValue(trainData, "track"),
+                    TrackChange = GetStringValue(trainData, "track_change"),
+                    Platform = GetStringValue(trainData, "platform"),
+                    PlatformChange = GetStringValue(trainData, "platform_change")
+                };
             stationArrivals.Add(arrival);
         }
-
         return stationArrivals;
     }
 
-    private static string RemoveSpecialCharacters(string str)
+    public async Task<List<TrainView>> GetTrainView()
     {
-        StringBuilder stringBuilder = new StringBuilder();
+        JObject response = await _septaApiClient.RegionalRailTrainView();
 
-        foreach (char c in str)
+        JProperty data = response.Properties().First();
+
+        var trainsOnSystem = new List<TrainView>();
+        
+        JToken trainView = data.Value;
+
+        foreach (var trainData in trainView)
         {
-            if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
+            var train = new TrainView
             {
-                stringBuilder.Append(c);
-            }
+                Latitude = GetFloatValue(trainData, "lat"),
+                Longitude = GetFloatValue(trainData, "lon"),
+                TrainNumber = RemoveSpecialCharacters(GetStringValue(trainData, "trainno")),
+                ServiceType = GetStringValue(trainData, "service"),
+                Destination = GetStringValue(trainData, "destination"),
+                CurrentStop = GetStringValue(trainData, "currentstop"),
+                NextStop = GetStringValue(trainData, "nextstop"),
+                Line = GetStringValue(trainData, "line"),
+                Consist = GetStringValue(trainData, "consist"),
+                Heading = GetFloatValue(trainData, "heading"),
+                MinutesLate = GetIntValue(trainData, "late"),
+                Source = GetStringValue(trainData, "SOURCE"),
+                Track = GetStringValue(trainData, "TRACK"),
+                TrackChange = GetStringValue(trainData, "TRACK_CHANGE")
+            };
+            trainsOnSystem.Add(train);
         }
-        return stringBuilder.ToString();
+        return trainsOnSystem;
     }
 }
