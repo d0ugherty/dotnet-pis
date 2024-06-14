@@ -17,7 +17,7 @@ namespace DotNetPIS.App.Controllers
             _septaRrService = septaRrService;
             _stopService = stopService;
         }
-
+        
         public async Task<ActionResult> Index(int stopId = 4)
         {
             InfoBoardViewModel viewModel = await RenderBoard(stopId);
@@ -28,15 +28,33 @@ namespace DotNetPIS.App.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateBoard(int stopId)
         {
-            return RedirectToAction("Index", new { stopId });
+            Stop stop = await _stopService.GetStopById(stopId);
+
+            string stopName = _septaRrService.GtfsNameToApiName(stop.Name);
+
+            List<Arrival> arrivals = await GetTrainData(stopName);
+
+            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", 2);
+
+            var viewModel = new InfoBoardViewModel
+            {
+                Title = $"Train Information for {stopName}",
+                StationName = stopName,
+                StopId = stopId,
+                Arrivals = arrivals,
+                Stops = stops
+            };
+
+            
+            return RedirectToAction("Index", new {viewModel.StopId});
         }
 
         private async Task<List<Arrival>> GetTrainData(string stationName)
         {
             List<Arrival> arrivals = new List<Arrival>();
 
-            var northbound = await _septaRrService.GetRegionalRailArrivals(stationName, "N", 5);
-            var southbound = await _septaRrService.GetRegionalRailArrivals(stationName, "S", 5);
+            List<Arrival> northbound = await _septaRrService.GetRegionalRailArrivals(stationName, "N", 5);
+            List<Arrival> southbound = await _septaRrService.GetRegionalRailArrivals(stationName, "S", 5);
 
             arrivals.AddRange(northbound);
             arrivals.AddRange(southbound);

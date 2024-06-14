@@ -7,7 +7,9 @@
     </thead>
     <tbody id="tbl-body-arrivals"
            hx-post="/InfoBoard/UpdateBoard?stopId=@Model.StopId"
-           hx-trigger="every 5s">
+           hx-trigger="every 5s"
+           hx-swap="innerHTML"
+           hx-target="#tbl-body-arrivals">
         @await Html.PartialAsync("InfoBoard/_Rows", Model)
     </tbody>
 </table>
