@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<Context>(opt =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=../DotNetPIS.Data/dotnetpis.db";
-    opt.UseSqlite(connectionString,  x => x.MigrationsAssembly("DotNetPIS.Data"));
+    opt.UseSqlite(connectionString, x => x.MigrationsAssembly("DotNetPIS.Data"));
     opt.EnableSensitiveDataLogging();
 });
 

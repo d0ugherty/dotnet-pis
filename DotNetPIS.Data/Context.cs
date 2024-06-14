@@ -51,12 +51,12 @@ public class Context : DbContext
 
         modelBuilder.Entity<Agency>()
             .HasKey(a => a.Id);
-		
+
         modelBuilder.Entity<Route>()
             .HasMany(route => route.Trips)
             .WithOne(trip => trip.Route)
             .HasForeignKey(trip => trip.RouteId);
-		
+
         modelBuilder.Entity<Trip>()
             .HasMany(trip => trip.StopTimes)
             .WithOne(st => st.Trip)

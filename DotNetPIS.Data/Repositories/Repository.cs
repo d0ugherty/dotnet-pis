@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNetPIS.Data.Repositories;
 
-public class Repository<T,K> : IRepository<T,K> where T : class
+public class Repository<T, K> : IRepository<T, K> where T : class
 {
     private readonly DbSet<T> _dbSet;
 

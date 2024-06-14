@@ -16,8 +16,8 @@ public class DataImport
     {
         _context = context;
     }
-    
-     private void ImportSources(string filePath)
+
+    private void ImportSources(string filePath)
     {
         var records = ReadCsv<SourceCsv>(filePath);
 
@@ -116,11 +116,11 @@ public class DataImport
                     AgencyId = agency?.Id,
                     Agency = agency
                 };
-                
+
                 _context.Routes.Add(route);
 
                 agency?.Routes.Add(route);
-                
+
                 row++;
             }
             Console.WriteLine("Saving changes.");
@@ -167,7 +167,7 @@ public class DataImport
                 _context.Calendars.Add(calendar);
 
                 source.Calendars.Add(calendar);
-                
+
                 row++;
             }
             Console.WriteLine("Saving changes.");
@@ -186,7 +186,7 @@ public class DataImport
     private void ImportCalendarDates(string filePath)
     {
         var records = ReadCsv<CalendarDatesCsv>(filePath);
-        
+
         try
         {
             int row = 1;
@@ -201,7 +201,7 @@ public class DataImport
                     Date = record.date,
                     ExceptionType = record.exception_type
                 });
-                
+
                 row++;
             }
             Console.WriteLine("Saving changes.");
@@ -281,8 +281,8 @@ public class DataImport
 
                 _context.FareAttributesTbl.Add(fareAttributes);
 
-               // fare.FareAttributesId = fareAttributes.Id;
-             //   fare.FareAttributes = fareAttributes;
+                // fare.FareAttributesId = fareAttributes.Id;
+                //   fare.FareAttributes = fareAttributes;
                 _context.Update(fare);
 
                 row++;
@@ -310,7 +310,7 @@ public class DataImport
             foreach (var record in records)
             {
                 Console.Write($"{new string(' ', 20)}Importing row {row}\r");
-                
+
                 var shape = new Shape
                 {
                     ShapeNumber = record.shape_id,
@@ -321,14 +321,14 @@ public class DataImport
                     SourceId = source.Id,
                     Source = source
                 };
-                
+
                 _context.Shapes.Add(shape);
                 row++;
             }
             Console.WriteLine("Saving changes.");
 
             _context.SaveChanges();
-        } 
+        }
         catch (InvalidOperationException ex)
         {
             Console.WriteLine($"Invalid operation occurred during importing of \n " +
@@ -368,7 +368,7 @@ public class DataImport
             Console.WriteLine("Saving changes.");
 
             _context.SaveChanges();
-        } 
+        }
         catch (InvalidOperationException ex)
         {
             Console.WriteLine($"Invalid operation occurred during importing of \n " +
@@ -393,7 +393,7 @@ public class DataImport
             var trips = _context.Trips
                 .Where(t => t.Route.Agency!.SourceId == source.Id)
                 .ToList();
-            
+
             foreach (var record in records)
             {
                 Console.Write($"{new string(' ', 20)}Importing row {row}\r");
@@ -414,8 +414,8 @@ public class DataImport
                     Trip = trip
                 };
 
-                _context.StopTimes.Add(stopTime); 
-                
+                _context.StopTimes.Add(stopTime);
+
                 stop.StopTimes.Add(stopTime);
                 trip.StopTimes!.Add(stopTime);
 
@@ -445,7 +445,7 @@ public class DataImport
             var routes = _context.Routes
                 .Where(r => r.Agency!.SourceId == source.Id)
                 .ToList();
-            
+
             foreach (var record in records)
             {
                 Console.Write($"{new string(' ', 20)}Importing row {row}\r");
@@ -489,9 +489,9 @@ public class DataImport
         using (var reader = new StreamReader(filePath))
         {
             using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                   {
-                       MissingFieldFound = null
-                   }))
+            {
+                MissingFieldFound = null
+            }))
             {
                 csv.Read();
                 csv.ReadHeader();
@@ -500,7 +500,7 @@ public class DataImport
             }
         }
     }
-    
+
     private void ImportTry(string filePath, Action<string> import)
     {
         if (File.Exists(filePath))
@@ -561,17 +561,17 @@ public class DataImport
 
         _context.SaveChanges();
     }
-    
-    public void ImportGtfsData(string dataSourceName="")
+
+    public void ImportGtfsData(string dataSourceName = "")
     {
         if (dataSourceName.Equals(""))
         {
             ImportTry($"../data/sources.csv", ImportSources);
 
             var sources = _context.Sources.ToList();
-            
+
             foreach (var source in sources)
-            { 
+            {
                 ImportDataFromFiles(source);
             }
         }

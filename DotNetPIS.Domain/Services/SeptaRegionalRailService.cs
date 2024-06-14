@@ -37,24 +37,24 @@ public class SeptaRegionalRailService : BaseJsonService
 
         foreach (var trainData in arrivals!)
         {
-          var arrival = new Arrival
-                {
-                    Direction = ParseStringValue(trainData, "direction"),
-                    Path = ParseStringValue(trainData, "path"),
-                    TrainId = RemoveSpecialCharacters(ParseStringValue(trainData, "train_id")),
-                    Origin = ParseStringValue(trainData, "origin"),
-                    Destination = ParseStringValue(trainData, "destination"),
-                    Line = ParseStringValue(trainData, "line"),
-                    Status = ParseStringValue(trainData, "status"),
-                    ServiceType = ParseStringValue(trainData, "service_type"),
-                    NextStation = ParseStringValue(trainData, "next_station"),
-                    SchedTime = ParseDateTimeString(trainData, "sched_time"),
-                    DepartTime = ParseDateTimeString(trainData, "depart_time"),
-                    Track = ParseStringValue(trainData, "track"),
-                    TrackChange = ParseStringValue(trainData, "track_change"),
-                    Platform = ParseStringValue(trainData, "platform"),
-                    PlatformChange = ParseStringValue(trainData, "platform_change")
-                };
+            var arrival = new Arrival
+            {
+                Direction = ParseStringValue(trainData, "direction"),
+                Path = ParseStringValue(trainData, "path"),
+                TrainId = RemoveSpecialCharacters(ParseStringValue(trainData, "train_id")),
+                Origin = ParseStringValue(trainData, "origin"),
+                Destination = ParseStringValue(trainData, "destination"),
+                Line = ParseStringValue(trainData, "line"),
+                Status = ParseStringValue(trainData, "status"),
+                ServiceType = ParseStringValue(trainData, "service_type"),
+                NextStation = ParseStringValue(trainData, "next_station"),
+                SchedTime = ParseDateTimeString(trainData, "sched_time"),
+                DepartTime = ParseDateTimeString(trainData, "depart_time"),
+                Track = ParseStringValue(trainData, "track"),
+                TrackChange = ParseStringValue(trainData, "track_change"),
+                Platform = ParseStringValue(trainData, "platform"),
+                PlatformChange = ParseStringValue(trainData, "platform_change")
+            };
             stationArrivals.Add(arrival);
         }
         return stationArrivals;
@@ -67,7 +67,7 @@ public class SeptaRegionalRailService : BaseJsonService
         JProperty data = response.Properties().First();
 
         var trainsOnSystem = new List<TrainView>();
-        
+
         JToken trainView = data.Value;
 
         foreach (var trainData in trainView)
@@ -97,7 +97,7 @@ public class SeptaRegionalRailService : BaseJsonService
     public async Task<List<NextToArrive>> GetNextToArrive(string startingStation, string endingStation, int results)
     {
         JObject response = await _septaApiClient.GetNextToArrive(startingStation, endingStation, results);
-        
+
         JProperty data = response.Properties().First();
 
         JToken nextToArrive = data.Value;
@@ -130,7 +130,7 @@ public class SeptaRegionalRailService : BaseJsonService
     public Task<string> GtfsNameToApiName(string apiName)
     {
         string stopName;
-        
+
         switch (apiName)
         {
             case "Gray 30th Street":

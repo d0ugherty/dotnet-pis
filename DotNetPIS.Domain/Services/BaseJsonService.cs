@@ -22,7 +22,7 @@ public abstract class BaseJsonService
     protected string ParseDateTimeString(JToken token, string propertyName)
     {
         string timeProperty = ParseStringValue(token, propertyName);
-        
+
         string timeString = DateTime.Parse(timeProperty).ToShortTimeString();
 
         return timeString;
@@ -31,7 +31,7 @@ public abstract class BaseJsonService
     protected int ParseIntValue(JToken token, string propertyName)
     {
         int value = 0;
-        
+
         if (token[propertyName] != null)
         {
             value = int.Parse(token[propertyName]?.ToString() ?? string.Empty);
@@ -48,7 +48,7 @@ public abstract class BaseJsonService
 
         return result;
     }
-    
+
     protected static string RemoveSpecialCharacters(string str)
     {
         StringBuilder stringBuilder = new StringBuilder();

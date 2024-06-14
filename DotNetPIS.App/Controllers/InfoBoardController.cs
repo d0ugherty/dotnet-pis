@@ -11,8 +11,8 @@ namespace DotNetPIS.App.Controllers
     {
         private readonly SeptaRegionalRailService _septaRrService;
         private readonly StopService _stopService;
-        
-        public InfoBoardController( SeptaRegionalRailService septaRrService, StopService stopService)
+
+        public InfoBoardController(SeptaRegionalRailService septaRrService, StopService stopService)
         {
             _septaRrService = septaRrService;
             _stopService = stopService;
@@ -23,7 +23,7 @@ namespace DotNetPIS.App.Controllers
             Stop stop = await _stopService.GetStopById(stopId);
 
             string stopName = await _septaRrService.GtfsNameToApiName(stop.Name);
-            
+
             List<Arrival> arrivals = await GetTrainData(stopName);
 
             List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", 2);
@@ -35,7 +35,7 @@ namespace DotNetPIS.App.Controllers
                 Arrivals = arrivals,
                 Stops = stops
             };
-            
+
             return View(viewModel);
         }
 
@@ -51,7 +51,7 @@ namespace DotNetPIS.App.Controllers
 
             var northbound = await _septaRrService.GetRegionalRailArrivals(stationName, "N", 5);
             var southbound = await _septaRrService.GetRegionalRailArrivals(stationName, "S", 5);
-            
+
             arrivals.AddRange(northbound);
             arrivals.AddRange(southbound);
 

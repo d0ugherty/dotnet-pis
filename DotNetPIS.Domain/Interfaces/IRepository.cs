@@ -1,6 +1,6 @@
 namespace DotNetPIS.Domain.Interfaces;
 
-public interface IRepository<T,K>
+public interface IRepository<T, K>
 {
     IQueryable<T> GetAll();
     T GetById(K id);

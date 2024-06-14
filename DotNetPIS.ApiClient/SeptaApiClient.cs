@@ -7,7 +7,7 @@ namespace DotNetPIS.ApiClient;
 public class SeptaApiClient : ISeptaApiClient
 {
     private readonly HttpClient _httpClient;
-    
+
     public SeptaApiClient(HttpClient httpClient)
     {
         _httpClient = httpClient;
@@ -19,7 +19,7 @@ public class SeptaApiClient : ISeptaApiClient
             $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}&direction={direction}");
 
         JObject data = await ParseResponse(response);
-         
+
         return data;
     }
 

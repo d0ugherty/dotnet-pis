@@ -10,5 +10,5 @@ public class RoutesCsv
     public string? route_color { get; set; }
     public string? route_text_color { get; set; }
     public string? route_url { get; set; }
-    public string agency_id { get; set; }= null!;
+    public string agency_id { get; set; } = null!;
 }

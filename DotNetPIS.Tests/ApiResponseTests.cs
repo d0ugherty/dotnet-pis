@@ -9,13 +9,13 @@ namespace DotNetPIS.Tests;
 public class ApiResponseTests
 {
     private readonly ITestOutputHelper _testOutputHelper;
-    
+
     private readonly HttpClient _httpClient;
-    
-    
+
+
     public ApiResponseTests(ITestOutputHelper testOutputHelper)
     {
-        _httpClient = new HttpClient(); 
+        _httpClient = new HttpClient();
         _testOutputHelper = testOutputHelper;
     }
 
@@ -27,7 +27,7 @@ public class ApiResponseTests
             $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}&direction={direction}");
 
         response.EnsureSuccessStatusCode();
-        
+
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
 
@@ -37,7 +37,7 @@ public class ApiResponseTests
     {
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}&direction={direction}");
-        
+
         string responseContent = await response.Content.ReadAsStringAsync();
 
         Assert.NotNull(responseContent);
@@ -49,14 +49,14 @@ public class ApiResponseTests
     {
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}&direction={direction}");
-        
+
         string responseContent = await response.Content.ReadAsStringAsync();
-        
+
         JObject data = JObject.Parse(responseContent);
 
         Assert.NotEmpty(data);
     }
-    
+
     [Theory]
     [InlineData("30th Street Station", "N", 10)]
     public async void ParseJObjectToStationDeparture_ShouldParseCorrectly(string stationName, string direction, int results)
@@ -67,13 +67,13 @@ public class ApiResponseTests
         response.EnsureSuccessStatusCode();
 
         string content = await response.Content.ReadAsStringAsync();
-        
+
         JObject root = JObject.Parse(content);
-        
+
         var stationArrivals = ParseJObjectToStationDeparture(root);
 
         var firstArrival = stationArrivals[0];
-        
+
         _testOutputHelper.WriteLine(firstArrival.ToString());
     }
 
@@ -83,9 +83,9 @@ public class ApiResponseTests
         var stationData = root.Properties().First();
 
         var northboundArrivals = stationData.Value[0]?["Northbound"];
-        
+
         _testOutputHelper.WriteLine($"northboundArrivals = {northboundArrivals}");
-        
+
         if (northboundArrivals != null)
             foreach (var arrival in northboundArrivals)
             {

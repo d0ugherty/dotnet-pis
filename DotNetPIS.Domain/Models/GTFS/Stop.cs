@@ -4,26 +4,26 @@ namespace DotNetPIS.Domain.Models.GTFS;
 
 public class Stop
 {
-	public int Id { get; set; }
+    public int Id { get; set; }
 
-	public required string StopNumber { get; set; }
+    public required string StopNumber { get; set; }
 
-	public string Name { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
-	public string? Description { get; set; }
+    public string? Description { get; set; }
 
-	public float Latitude { get; set; }
+    public float Latitude { get; set; }
 
-	public float Longitude { get; set; }
+    public float Longitude { get; set; }
 
-	public string? ZoneId { get; set; }
+    public string? ZoneId { get; set; }
 
-	public string? Url { get; set; }
+    public string? Url { get; set; }
 
-	public List<StopTime> StopTimes { get; set; } = new List<StopTime>();
+    public List<StopTime> StopTimes { get; set; } = new List<StopTime>();
 
-	[ForeignKey("Source")] 
-	public int SourceId { get; set; }
+    [ForeignKey("Source")]
+    public int SourceId { get; set; }
 
-	public required Source Source { get; set; }
+    public required Source Source { get; set; }
 }

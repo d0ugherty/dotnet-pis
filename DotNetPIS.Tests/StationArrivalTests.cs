@@ -50,9 +50,9 @@ public class StationArrivalTests
                 ]
             }
         }";
-        
+
         JObject root = JObject.Parse(json);
-        
+
         var stationArrivals = ParseJObjectToStationDeparture(root);
 
         Assert.Equal(2, stationArrivals.Count);
