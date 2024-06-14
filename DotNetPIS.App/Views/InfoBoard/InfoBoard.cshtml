@@ -1,14 +1,20 @@
-@using DotNetPIS.Domain.Models.SEPTA
+@model InfoBoardViewModel
 
 @{
-    ViewData["Title"] = "InfoBoard";
-    var arrivals = ViewData["Arrivals"] as List<Arrival> ?? new List<Arrival>();
-    var stationName = ViewData["Station Name"] as string;
+    ViewData["Title"] = Model.Title;
 }
+<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
 
-<h1>Train Information for @stationName</h1>
+<h1>@Model.Title</h1>
 
-@await Html.PartialAsync("../Shared/InfoBoard/_Arrivals", arrivals, ViewData)
+<div id="train-info">
+    @await Html.PartialAsync("../Shared/InfoBoard/_Arrivals", Model, ViewData)
+</div>
+
+<div id="stop-slct">
+    @await Html.PartialAsync("Components/_StopSelect", Model, ViewData)
+</div>
+
 
 
 

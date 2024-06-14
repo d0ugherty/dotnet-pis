@@ -1,7 +1,5 @@
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@using DotNetPIS.Domain.Models.SEPTA;
 
-@model List<Arrival>
+@model InfoBoardViewModel
 
 <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
 
@@ -10,7 +8,7 @@
         @await Html.PartialAsync("InfoBoard/_Header")
     </thead>
     <tbody id="tbl-body-arrivals"
-           hx-post="/InfoBoard/UpdateBoard?stationName=@ViewData["Station Name"]"
+           hx-post="/InfoBoard/UpdateBoard?stationName=@Model.StationName"
            hx-trigger="every 5s">
         @await Html.PartialAsync("InfoBoard/_Rows", Model)
     </tbody>

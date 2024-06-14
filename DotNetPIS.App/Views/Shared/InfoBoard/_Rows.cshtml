@@ -1,10 +1,9 @@
-@using System.Collections
 @using DotNetPIS.Domain.Models.SEPTA;
 
-@model List<Arrival>
+@model InfoBoardViewModel
 
 @{
-    foreach (var arrival in Model)
+    foreach (var arrival in Model.Arrivals)
     {
         <tr>
             <td>

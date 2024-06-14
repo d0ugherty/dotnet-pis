@@ -1,4 +1,5 @@
 using DotNetPIS.Domain.Interfaces;
+using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Models.SEPTA;
 using Newtonsoft.Json.Linq;
 
@@ -7,10 +8,12 @@ namespace DotNetPIS.Domain.Services;
 public class SeptaRegionalRailService : BaseJsonService
 {
     private readonly ISeptaApiClient _septaApiClient;
+    private readonly IRepository<Stop, int> _stopRepo;
 
-    public SeptaRegionalRailService(ISeptaApiClient septaApiClient)
+    public SeptaRegionalRailService(ISeptaApiClient septaApiClient, IRepository<Stop, int> stopRepo)
     {
         _septaApiClient = septaApiClient;
+        _stopRepo = stopRepo;
     }
 
     public async Task<List<Arrival>> GetRegionalRailArrivals(string stationName, string direction, int results = 10)
@@ -122,5 +125,42 @@ public class SeptaRegionalRailService : BaseJsonService
         }
 
         return nextTrainsToArrive;
+    }
+
+    public Task<string> GtfsNameToApiName(string apiName)
+    {
+        string stopName;
+        
+        switch (apiName)
+        {
+            case "Gray 30th Street":
+                stopName = "30th Street Station";
+                break;
+            case "49th Street":
+                stopName = "49th St";
+                break;
+            case "Airport Terminal E F":
+                stopName = "Airport Terminal E-F";
+                break;
+            case "Airport Terminal C D":
+                stopName = "Airport Terminal C-D";
+                break;
+            case "Chester":
+                stopName = "Chester TC";
+                break;
+            case "9th Street Landsdale":
+                stopName = "9th St";
+                break;
+            case "Fort Washington":
+                stopName = "Ft Washington";
+                break;
+            case "Norristown - Elm Street":
+                stopName = "Elm St";
+                break;
+            default:
+                stopName = apiName;
+                break;
+        }
+        return Task.FromResult(stopName);
     }
 }

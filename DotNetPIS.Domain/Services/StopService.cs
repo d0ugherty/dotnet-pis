@@ -1,6 +1,7 @@
 using DotNetPIS.Domain.Interfaces;
 using DotNetPIS.Domain.Models.GTFS;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DotNetPIS.Domain.Services;
 
@@ -23,5 +24,23 @@ public class StopService
             .ToListAsync();
 
         return stops;
+    }
+
+    public async Task<List<SelectListItem>> GetStopSelectList(string agencyName, int routeType)
+    {
+        List<Stop> stops = await GetStopsByAgencyAndRouteType(agencyName, routeType);
+
+        List<SelectListItem> stopSelectList = stops.Select(stop => new SelectListItem
+        {
+            Value = stop.Id.ToString(),
+            Text = stop.Name
+        }).ToList();
+
+        return stopSelectList;
+    }
+
+    public async Task<Stop> GetStopById(int id)
+    {
+        return await Task.FromResult(_stopRepo.GetById(id));
     }
 }

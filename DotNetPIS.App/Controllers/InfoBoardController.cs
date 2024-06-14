@@ -1,7 +1,9 @@
+using DotNetPIS.App.Models;
 using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Models.SEPTA;
 using DotNetPIS.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DotNetPIS.App.Controllers
 {
@@ -16,30 +18,31 @@ namespace DotNetPIS.App.Controllers
             _stopService = stopService;
         }
 
-        public async Task<ActionResult> InfoBoard()
+        public async Task<ActionResult> InfoBoard(int stopId = 4)
         {
-            string stationName = "30th Street Station";
-            
-            List<Arrival> arrivals = await GetTrainData(stationName);
+            Stop stop = await _stopService.GetStopById(stopId);
 
-            List<Stop> stops = await _stopService.GetStopsByAgencyAndRouteType("SEPTA", 2);
+            string stopName = await _septaRrService.GtfsNameToApiName(stop.Name);
             
-            ViewData["Arrivals"] = arrivals;
-            ViewData["Station Name"] = stationName;
-            ViewData["Stops"] = stops;
+            List<Arrival> arrivals = await GetTrainData(stopName);
+
+            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", 2);
+
+            var viewModel = new InfoBoardViewModel
+            {
+                Title = $"Train Information for {stopName}",
+                StationName = stopName,
+                Arrivals = arrivals,
+                Stops = stops
+            };
             
-            return View();
+            return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<ActionResult> UpdateBoard(string stationName)
+        public Task<ActionResult> UpdateBoard(int stopId)
         {
-            List<Arrival> arrivals = await GetTrainData(stationName);
-            
-            ViewData["Arrivals"] = arrivals;
-            ViewData["Station Name"] = stationName;
-            
-            return PartialView("InfoBoard/_Rows", arrivals);
+            return Task.FromResult<ActionResult>(RedirectToAction("InfoBoard", "InfoBoard", new { stopId }));
         }
 
         private async Task<List<Arrival>> GetTrainData(string stationName)
