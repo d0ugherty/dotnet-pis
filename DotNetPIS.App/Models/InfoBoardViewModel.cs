@@ -10,4 +10,5 @@ public class InfoBoardViewModel
     public string StationName { get; set; }
     public List<Arrival> Arrivals { get; set; } = new List<Arrival>();
     public List<SelectListItem>? Stops { get; set; }
+    public int StopId { get; set; }
 }

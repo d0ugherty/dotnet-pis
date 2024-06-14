@@ -127,7 +127,7 @@ public class SeptaRegionalRailService : BaseJsonService
         return nextTrainsToArrive;
     }
 
-    public Task<string> GtfsNameToApiName(string apiName)
+    public string GtfsNameToApiName(string apiName)
     {
         string stopName;
 
@@ -161,6 +161,7 @@ public class SeptaRegionalRailService : BaseJsonService
                 stopName = apiName;
                 break;
         }
-        return Task.FromResult(stopName);
+
+        return stopName;
     }
 }

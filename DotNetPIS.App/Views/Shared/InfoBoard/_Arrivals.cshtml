@@ -1,14 +1,12 @@
 
 @model InfoBoardViewModel
 
-<script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
-
 <table id="tbl-arrivals">
     <thead>
         @await Html.PartialAsync("InfoBoard/_Header")
     </thead>
     <tbody id="tbl-body-arrivals"
-           hx-post="/InfoBoard/UpdateBoard?stationName=@Model.StationName"
+           hx-post="/InfoBoard/UpdateBoard?stopId=@Model.StopId"
            hx-trigger="every 5s">
         @await Html.PartialAsync("InfoBoard/_Rows", Model)
     </tbody>

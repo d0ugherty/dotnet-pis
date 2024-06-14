@@ -18,31 +18,17 @@ namespace DotNetPIS.App.Controllers
             _stopService = stopService;
         }
 
-        public async Task<ActionResult> InfoBoard(int stopId = 4)
+        public async Task<ActionResult> Index(int stopId = 4)
         {
-            Stop stop = await _stopService.GetStopById(stopId);
-
-            string stopName = await _septaRrService.GtfsNameToApiName(stop.Name);
-
-            List<Arrival> arrivals = await GetTrainData(stopName);
-
-            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", 2);
-
-            var viewModel = new InfoBoardViewModel
-            {
-                Title = $"Train Information for {stopName}",
-                StationName = stopName,
-                Arrivals = arrivals,
-                Stops = stops
-            };
-
+            InfoBoardViewModel viewModel = await RenderBoard(stopId);
+            
             return View(viewModel);
         }
 
         [HttpPost]
-        public Task<ActionResult> UpdateBoard(int stopId)
+        public async Task<ActionResult> UpdateBoard(int stopId)
         {
-            return Task.FromResult<ActionResult>(RedirectToAction("InfoBoard", "InfoBoard", new { stopId }));
+            return RedirectToAction("Index", new { stopId });
         }
 
         private async Task<List<Arrival>> GetTrainData(string stationName)
@@ -56,6 +42,28 @@ namespace DotNetPIS.App.Controllers
             arrivals.AddRange(southbound);
 
             return arrivals;
+        }
+
+        private async Task<InfoBoardViewModel> RenderBoard(int stopId = 4)
+        {
+            Stop stop = await _stopService.GetStopById(stopId);
+
+            string stopName = _septaRrService.GtfsNameToApiName(stop.Name);
+
+            List<Arrival> arrivals = await GetTrainData(stopName);
+
+            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", 2);
+
+            var viewModel = new InfoBoardViewModel
+            {
+                Title = $"Train Information for {stopName}",
+                StationName = stopName,
+                StopId = stopId,
+                Arrivals = arrivals,
+                Stops = stops
+            };
+
+            return viewModel;
         }
     }
 }

@@ -62,6 +62,26 @@ public class SeptaApiClient : ISeptaApiClient
         return data;
     }
 
+    public async Task<JObject> TransitViewAll()
+    {
+        HttpResponseMessage response =
+            await _httpClient.GetAsync("https://www3.septa.org/api/TransitViewAll/index.php");
+
+        JObject data = await ParseResponse(response);
+
+        return data;
+    }
+
+    public async Task<JObject> GetAlertData(string routeId)
+    {
+        HttpResponseMessage response =
+            await _httpClient.GetAsync($"https://www3.septa.org/api/Alerts/get_alert_data.php?route_id={routeId}");
+
+        JObject data = await ParseResponse(response);
+
+        return data;
+    }
+    
     private static async Task<JObject> ParseResponse(HttpResponseMessage response)
     {
         response.EnsureSuccessStatusCode();
@@ -80,4 +100,6 @@ public class SeptaApiClient : ISeptaApiClient
         }
         return data;
     }
+    
+    
 }
