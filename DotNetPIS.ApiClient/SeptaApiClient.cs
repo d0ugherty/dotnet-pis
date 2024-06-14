@@ -15,8 +15,6 @@ public class SeptaApiClient : ISeptaApiClient
 
     public async Task<JObject> GetRegionalRailArrivals(string stationName, string direction, int results = 10)
     {
-        Console.WriteLine($"STATION NAME: {stationName}");
-        
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}&direction={direction}");
 
