@@ -2,9 +2,7 @@
 @model InfoBoardViewModel
 
 <table id="tbl-arrivals"
-       hx-get="/UpdateBoard?stopId=@Model.StopId"
-       hx-vals="{stopId = @Model.StopId}"
-       hx-push-url="true"
+       hx-get="/InfoBoard/UpdateBoard?stopId=@Model.StopId"
        hx-trigger="every 5s"
        hx-swap="outerHTML"
        hx-target="#tbl-body-arrivals">

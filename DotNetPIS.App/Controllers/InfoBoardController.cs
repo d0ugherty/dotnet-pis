@@ -18,6 +18,7 @@ namespace DotNetPIS.App.Controllers
             _stopService = stopService;
         }
         
+        [HttpGet]
         public async Task<ActionResult> Index(int stopId = 4)
         {
             InfoBoardViewModel viewModel = await RenderBoard(stopId);
@@ -31,7 +32,7 @@ namespace DotNetPIS.App.Controllers
             var viewModel = await RenderBoard(stopId);
             
             //return RedirectToAction("Index", new {viewModel.StopId});
-            return PartialView("InfoBoard/_Arrivals", viewModel);
+            return PartialView("InfoBoard/_Rows", viewModel);
             //return View(viewModel);
         }
 
