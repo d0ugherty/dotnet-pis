@@ -25,28 +25,14 @@ namespace DotNetPIS.App.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> UpdateBoard(int stopId)
         {
-            Stop stop = await _stopService.GetStopById(stopId);
-
-            string stopName = _septaRrService.GtfsNameToApiName(stop.Name);
-
-            List<Arrival> arrivals = await GetTrainData(stopName);
-
-            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", 2);
-
-            var viewModel = new InfoBoardViewModel
-            {
-                Title = $"Train Information for {stopName}",
-                StationName = stopName,
-                StopId = stopId,
-                Arrivals = arrivals,
-                Stops = stops
-            };
-
+            var viewModel = await RenderBoard(stopId);
             
-            return RedirectToAction("Index", new {viewModel.StopId});
+            //return RedirectToAction("Index", new {viewModel.StopId});
+            return PartialView("InfoBoard/_Arrivals", viewModel);
+            //return View(viewModel);
         }
 
         private async Task<List<Arrival>> GetTrainData(string stationName)
@@ -62,7 +48,7 @@ namespace DotNetPIS.App.Controllers
             return arrivals;
         }
 
-        private async Task<InfoBoardViewModel> RenderBoard(int stopId = 4)
+        private async Task<InfoBoardViewModel> RenderBoard(int stopId)
         {
             Stop stop = await _stopService.GetStopById(stopId);
 

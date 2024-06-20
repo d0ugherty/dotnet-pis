@@ -1,8 +1,7 @@
 @model InfoBoardViewModel
 
-<form id="selectForm" method="post" action="/InfoBoard/UpdateBoard">
+<form id="selectForm" method="get" action="/InfoBoard?stopId=@Model.StopId">
     <select name="stopId" id="stop-slct" asp-for="@Model.StationName" asp-items="@Model.Stops">
     </select>
-
     <button  class="btn-primary" type="submit">Submit</button>
 </form>
