@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="Models\GTFS\" />
+    <Folder Include="Models\Map\" />
   </ItemGroup>
 
   <ItemGroup>

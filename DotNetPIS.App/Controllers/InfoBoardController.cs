@@ -29,7 +29,7 @@ namespace DotNetPIS.App.Controllers
         [HttpGet]
         public async Task<ActionResult> UpdateBoard(int stopId)
         {
-            var viewModel = await RenderBoard(stopId);
+            InfoBoardViewModel viewModel = await RenderBoard(stopId);
             
             return PartialView("InfoBoard/_Rows", viewModel);
         }
