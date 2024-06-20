@@ -1,15 +1,15 @@
 
 @model InfoBoardViewModel
 
-<table id="tbl-arrivals"
-       hx-get="/InfoBoard/UpdateBoard?stopId=@Model.StopId"
-       hx-trigger="every 5s"
-       hx-swap="outerHTML"
-       hx-target="#tbl-body-arrivals">
+<table id="tbl-arrivals">
     <thead>
         @await Html.PartialAsync("InfoBoard/_Header")
     </thead>
-    <tbody id="tbl-body-arrivals">
+    <tbody id="tbl-body-arrivals"
+           hx-get="/InfoBoard/UpdateBoard?stopId=@Model.StopId"
+           hx-trigger="every 5s"
+           hx-swap="innerHTML"
+           hx-target="#tbl-body-arrivals">
         @await Html.PartialAsync("InfoBoard/_Rows", Model)
     </tbody>
 </table>
