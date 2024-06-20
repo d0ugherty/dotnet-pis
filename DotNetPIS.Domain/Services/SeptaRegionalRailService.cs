@@ -61,7 +61,9 @@ public class SeptaRegionalRailService : BaseJsonService
     public async Task<List<TrainView>> GetTrainView()
     {
         JObject response = await _septaApiClient.RegionalRailTrainView();
-
+        
+        Console.WriteLine($"PROPERTIES: {response.Properties()}");
+        
         JProperty data = response.Properties().First();
 
         var trainsOnSystem = new List<TrainView>();

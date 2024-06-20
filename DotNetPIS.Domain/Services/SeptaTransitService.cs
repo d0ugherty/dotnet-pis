@@ -12,7 +12,7 @@ public class SeptaTransitService : BaseJsonService
     {
         _septaApiClient = septaApiClient;
     }
-
+    
     public async Task<List<TransitView>> GetTransitView(string routeNumber)
     {
         JObject response = await _septaApiClient.TransitView(routeNumber);
