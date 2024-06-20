@@ -31,9 +31,7 @@ namespace DotNetPIS.App.Controllers
         {
             var viewModel = await RenderBoard(stopId);
             
-            //return RedirectToAction("Index", new {viewModel.StopId});
             return PartialView("InfoBoard/_Rows", viewModel);
-            //return View(viewModel);
         }
 
         private async Task<List<Arrival>> GetTrainData(string stationName)

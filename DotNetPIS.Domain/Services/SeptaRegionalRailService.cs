@@ -8,12 +8,10 @@ namespace DotNetPIS.Domain.Services;
 public class SeptaRegionalRailService : BaseJsonService
 {
     private readonly ISeptaApiClient _septaApiClient;
-    private readonly IRepository<Stop, int> _stopRepo;
 
-    public SeptaRegionalRailService(ISeptaApiClient septaApiClient, IRepository<Stop, int> stopRepo)
+    public SeptaRegionalRailService(ISeptaApiClient septaApiClient)
     {
         _septaApiClient = septaApiClient;
-        _stopRepo = stopRepo;
     }
 
     public async Task<List<Arrival>> GetRegionalRailArrivals(string stationName, string direction, int results = 10)
