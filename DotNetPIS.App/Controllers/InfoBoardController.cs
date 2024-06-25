@@ -29,11 +29,9 @@ namespace DotNetPIS.App.Controllers
         [HttpGet]
         public async Task<ActionResult> UpdateBoard(int stopId)
         {
-            var viewModel = await RenderBoard(stopId);
+            InfoBoardViewModel viewModel = await RenderBoard(stopId);
             
-            //return RedirectToAction("Index", new {viewModel.StopId});
             return PartialView("InfoBoard/_Rows", viewModel);
-            //return View(viewModel);
         }
 
         private async Task<List<Arrival>> GetTrainData(string stationName)

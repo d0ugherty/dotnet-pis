@@ -19,9 +19,14 @@ builder.Services.AddDbContext<Context>(opt =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<SeptaApiClient>();
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+
 builder.Services.AddScoped<ISeptaApiClient, SeptaApiClient>();
+
 builder.Services.AddScoped<SeptaRegionalRailService>();
 builder.Services.AddScoped<StopService>();
+builder.Services.AddScoped<ShapeService>();
+builder.Services.AddScoped<SeptaTransitService>();
+builder.Services.AddScoped<RouteService>();
 
 var app = builder.Build();
 

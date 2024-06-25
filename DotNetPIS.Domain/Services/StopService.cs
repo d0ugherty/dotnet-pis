@@ -13,9 +13,10 @@ public class StopService
     {
         _stopRepo = stopRepo;
     }
-
+    
     public async Task<List<Stop>> GetStopsByAgencyAndRouteType(string agencyName, int routeType)
     {
+        //To Do: Optimize this LINQ expression
         List<Stop> stops = await _stopRepo.GetAll()
             .Where(s => s.StopTimes.Any(st => st.Trip.Route.Agency != null &&
                                               st.Trip.Route.Agency.Name.Equals(agencyName)

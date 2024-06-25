@@ -8,12 +8,10 @@ namespace DotNetPIS.Domain.Services;
 public class SeptaRegionalRailService : BaseJsonService
 {
     private readonly ISeptaApiClient _septaApiClient;
-    private readonly IRepository<Stop, int> _stopRepo;
 
-    public SeptaRegionalRailService(ISeptaApiClient septaApiClient, IRepository<Stop, int> stopRepo)
+    public SeptaRegionalRailService(ISeptaApiClient septaApiClient)
     {
         _septaApiClient = septaApiClient;
-        _stopRepo = stopRepo;
     }
 
     public async Task<List<Arrival>> GetRegionalRailArrivals(string stationName, string direction, int results = 10)
@@ -62,15 +60,15 @@ public class SeptaRegionalRailService : BaseJsonService
 
     public async Task<List<TrainView>> GetTrainView()
     {
-        JObject response = await _septaApiClient.RegionalRailTrainView();
-
-        JProperty data = response.Properties().First();
-
+        JArray response = await _septaApiClient.RegionalRailTrainView();
+        
+        Console.WriteLine($"PROPERTIES: {response}");
+        
         var trainsOnSystem = new List<TrainView>();
 
-        JToken trainView = data.Value;
+        //Enumerable<JToken> trainView = response.Values();
 
-        foreach (var trainData in trainView)
+        foreach (var trainData in response)
         {
             var train = new TrainView
             {

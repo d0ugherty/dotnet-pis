@@ -1,0 +1,14 @@
+using DotNetPIS.Domain.Models.GTFS;
+using DotNetPIS.Domain.Models.SEPTA;
+
+namespace DotNetPIS.App.Models;
+
+public class MapViewModel
+{
+    public List<TrainView>? SeptaTrainMarkers { get; set; }
+    public List<Stop> Stops { get; set; }
+    public List<Shape>? Shapes { get; set; }
+    public bool GetTrainData { get; set; }
+    public bool GetBusData { get; set; }
+    public bool GetTrolleyData { get; set; }
+}
