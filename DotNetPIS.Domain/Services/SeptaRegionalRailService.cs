@@ -60,16 +60,13 @@ public class SeptaRegionalRailService : BaseJsonService
 
     public async Task<List<TrainView>> GetTrainView()
     {
-        JArray response = await _septaApiClient.RegionalRailTrainView();
-        
-        Console.WriteLine($"PROPERTIES: {response}");
+        JToken response = await _septaApiClient.RegionalRailTrainView();
         
         var trainsOnSystem = new List<TrainView>();
 
-        //Enumerable<JToken> trainView = response.Values();
-
-        foreach (var trainData in response)
+        foreach (JToken trainData in response)
         {
+            
             var train = new TrainView
             {
                 Latitude = ParseFloatValue(trainData, "lat"),
@@ -89,6 +86,7 @@ public class SeptaRegionalRailService : BaseJsonService
             };
             trainsOnSystem.Add(train);
         }
+
         return trainsOnSystem;
     }
 

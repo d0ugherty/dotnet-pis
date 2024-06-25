@@ -23,16 +23,13 @@ public class SeptaApiClient : ISeptaApiClient
         return data;
     }
 
-    public async Task<JArray> RegionalRailTrainView()
+    public async Task<JToken> RegionalRailTrainView()
     {
         HttpResponseMessage response = await _httpClient.GetAsync("https://www3.septa.org/api/TrainView/index.php");
-
-        Console.WriteLine($"RESPONSE: {response}");
         
-        JArray data = JArray.Parse(response.ToString().Trim());
-      // JObject data = await ParseResponse(response);
+        JToken data = JToken.Parse(await response.Content.ReadAsStringAsync());
+        
         return data;
-
     }
 
     public async Task<JObject> GetRegionalRailSchedule(string trainNumber)
@@ -91,20 +88,17 @@ public class SeptaApiClient : ISeptaApiClient
 
         string responseContent = await response.Content.ReadAsStringAsync();
         
-        Console.WriteLine($"RESPONSE CONTENT: {responseContent}");
-
         JObject data = new JObject();
 
         try
         {
             data = JObject.Parse(responseContent);
-            
-            Console.WriteLine($"DATA: {data.ToString()}");
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex);
         }
+
         return data;
     }
     

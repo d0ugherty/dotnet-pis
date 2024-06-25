@@ -31,20 +31,14 @@ namespace DotNetPIS.App.Controllers
         {
             bool getTrainData = true;
             
-            MapViewModel viewModel = await RenderMap(getTrainData);
+            MapViewModel viewModel = await RenderMap();
             
             return View(viewModel);
         }
 
-        public async Task<MapViewModel> RenderMap(bool getTrainData = true)
+        public async Task<MapViewModel> RenderMap()
         {
-            List<TrainView> trainData = new List<TrainView>();
-            List<Stop> trainStops = new List<Stop>();
-            
-            if (getTrainData)
-            {
-                (trainData, trainStops) = await GetTrainData();
-            }
+            (List<TrainView> trainData, List<Stop> trainStops) = await GetTrainData();
             
             var viewModel = new MapViewModel
             {

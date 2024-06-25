@@ -5,7 +5,7 @@ namespace DotNetPIS.Domain.Interfaces;
 public interface ISeptaApiClient
 {
     Task<JObject> GetRegionalRailArrivals(string stationName, string direction, int results);
-    Task<JArray> RegionalRailTrainView();
+    Task<JToken> RegionalRailTrainView();
     Task<JObject> GetRegionalRailSchedule(string trainNumber);
     Task<JObject> GetNextToArrive(string startStation, string endStation, int results);
     Task<JObject> TransitView(string routeNumber);
