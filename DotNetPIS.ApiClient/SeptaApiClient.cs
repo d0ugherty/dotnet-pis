@@ -27,8 +27,10 @@ public class SeptaApiClient : ISeptaApiClient
     {
         HttpResponseMessage response = await _httpClient.GetAsync("https://www3.septa.org/api/TrainView/index.php");
 
-        JArray data = JArray.Parse(response.ToString());
+        Console.WriteLine($"RESPONSE: {response}");
         
+        JArray data = JArray.Parse(response.ToString().Trim());
+      // JObject data = await ParseResponse(response);
         return data;
 
     }
@@ -97,7 +99,7 @@ public class SeptaApiClient : ISeptaApiClient
         {
             data = JObject.Parse(responseContent);
             
-            Console.WriteLine($"DATA: {data.PropertyValues()}");
+            Console.WriteLine($"DATA: {data.ToString()}");
         }
         catch (Exception ex)
         {

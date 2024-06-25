@@ -66,9 +66,9 @@ public class SeptaRegionalRailService : BaseJsonService
         
         var trainsOnSystem = new List<TrainView>();
 
-        IJEnumerable<JToken> trainView = response.Values();
+        //Enumerable<JToken> trainView = response.Values();
 
-        foreach (var trainData in trainView)
+        foreach (var trainData in response)
         {
             var train = new TrainView
             {
