@@ -1,16 +1,39 @@
 using DotNetPIS.Domain.Interfaces;
+using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Models.SEPTA;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.Domain.Services;
 
-public class SeptaTransitService : BaseJsonService
+public class SeptaTransitService : BaseService
 {
     private readonly ISeptaApiClient _septaApiClient;
-
-    public SeptaTransitService(ISeptaApiClient septaApiClient)
+    private readonly IRepository<Route, int> _routeRepo;
+    
+    public SeptaTransitService(ISeptaApiClient septaApiClient, IRepository<Route, int> routeRepo)
     {
         _septaApiClient = septaApiClient;
+        _routeRepo = routeRepo;
+    }
+    
+    private async Task<List<TransitView>> GetTransitDataByType(RouteType routeType)
+    {
+        var vehicles = new List<TransitView>();
+        
+        List<Route> routes = await _routeRepo.GetAll()
+            .Where(route => route.Agency != null 
+                            && route.Agency.Name.Equals("SEPTA") 
+                            && route.Type == (int)routeType)
+            .ToListAsync();
+
+        foreach (var route in routes)
+        {
+            var routeData = await GetTransitView(route.RouteNumber);
+            vehicles.AddRange(routeData);
+        }
+        
+        return vehicles;
     }
     
     public async Task<List<TransitView>> GetTransitView(string routeNumber)

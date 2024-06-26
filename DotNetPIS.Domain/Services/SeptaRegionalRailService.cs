@@ -5,7 +5,7 @@ using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.Domain.Services;
 
-public class SeptaRegionalRailService : BaseJsonService
+public class SeptaRegionalRailService : BaseService
 {
     private readonly ISeptaApiClient _septaApiClient;
 

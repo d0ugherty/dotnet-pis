@@ -3,7 +3,7 @@ using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.Domain.Services;
 
-public abstract class BaseJsonService
+public abstract class BaseService
 {
     protected string ParseStringValue(JToken token, string propertyName)
     {
