@@ -26,14 +26,14 @@ public class ShapeService
         return shapes;
     }
     
-    public List<Shape> GetShapesByRoute(int routeId)
+    public async Task<List<Shape>> GetShapesByRoute(int routeId)
     {
         var shapes = new List<Shape>();
         
-        List<Trip> routeTrips = _tripRepo.GetAll()
+        List<Trip> routeTrips = await _tripRepo.GetAll()
             .Where(trip => trip.RouteId == routeId)
             .Distinct()
-            .ToList();
+            .ToListAsync();
         
         foreach (var trip in routeTrips)
         {

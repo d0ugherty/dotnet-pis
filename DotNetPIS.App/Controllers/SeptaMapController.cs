@@ -39,11 +39,14 @@ namespace DotNetPIS.App.Controllers
         public async Task<MapViewModel> RenderMap()
         {
             (List<TrainView> trainData, List<Stop> trainStops) = await GetTrainData();
+
+            List<Shape> shapeData = await GetShapeData(RouteType.Rail);
             
             var viewModel = new MapViewModel
             {
                 SeptaTrainMarkers = trainData,
-                Stops = trainStops
+                Stops = trainStops,
+                Shapes = shapeData
             };
 
             return viewModel;
@@ -52,15 +55,37 @@ namespace DotNetPIS.App.Controllers
         private async Task<(List<TrainView>, List<Stop>)> GetTrainData()
         {
             List<TrainView> trainMarkers = await _septaRrService.GetTrainView();
-            List<Stop> stops = await _stopService.GetStopsByAgencyAndRouteType("SEPTA", 2);
+            List<Stop> stops = await _stopService.GetStopsByAgencyAndRouteType("SEPTA", RouteType.Rail);
             
             return (trainMarkers, stops);
         }
+
+        private async Task<List<Shape>> GetShapeData(RouteType routeType)
+        {
+            List<Route> routes = await _routeService.GetRoutesByAgencyAndType("SEPTA", routeType);
+
+            List<Shape> shapes = new List<Shape>();
+            
+            foreach (var route in routes)
+            {
+                List<Shape> routeShapes = await _shapeService.GetShapesByRoute(route.Id);
+                shapes.AddRange(routeShapes);
+            }
+
+            return shapes;
+        }
         
 
-        private async Task<List<TransitView>> GetTransitData(List<Route> routes)
+        private async Task<List<TransitView>> GetTransitData()
         {
             var vehicles = new List<TransitView>();
+            var routes = new List<Route>();
+
+            List<Route> busRoutes = await _routeService.GetRoutesByAgencyAndType("SEPTA", RouteType.Bus);
+            List<Route> trolleyRoutes = await _routeService.GetRoutesByAgencyAndType("SEPTA", RouteType.Tram);
+            
+            routes.AddRange(busRoutes);
+            routes.AddRange(trolleyRoutes);
             
             foreach (var route in routes)
             {

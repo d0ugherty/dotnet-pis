@@ -14,20 +14,20 @@ public class StopService
         _stopRepo = stopRepo;
     }
     
-    public async Task<List<Stop>> GetStopsByAgencyAndRouteType(string agencyName, int routeType)
+    public async Task<List<Stop>> GetStopsByAgencyAndRouteType(string agencyName, RouteType routeType)
     {
         //To Do: Optimize this LINQ expression
         List<Stop> stops = await _stopRepo.GetAll()
             .Where(s => s.StopTimes.Any(st => st.Trip.Route.Agency != null &&
                                               st.Trip.Route.Agency.Name.Equals(agencyName)
-                                              && st.Trip.Route.Type == routeType))
+                                              && st.Trip.Route.Type == (int)routeType))
             .Distinct()
             .ToListAsync();
 
         return stops;
     }
 
-    public async Task<List<SelectListItem>> GetStopSelectList(string agencyName, int routeType)
+    public async Task<List<SelectListItem>> GetStopSelectList(string agencyName, RouteType routeType)
     {
         List<Stop> stops = await GetStopsByAgencyAndRouteType(agencyName, routeType);
 

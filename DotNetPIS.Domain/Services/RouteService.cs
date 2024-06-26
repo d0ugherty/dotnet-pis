@@ -13,12 +13,12 @@ public class RouteService
         _routeRepo = routeRepo;
     }
 
-    public async Task<List<Route>> GetRoutesByAgencyAndType(string agencyName, int routeType)
+    public async Task<List<Route>> GetRoutesByAgencyAndType(string agencyName, RouteType routeType)
     {
         List<Route> routes = await _routeRepo.GetAll()
             .Where(route => route.Agency != null 
                             && route.Agency.Name.Equals(agencyName) 
-                            && route.Type == routeType)
+                            && route.Type == (int)routeType)
             .ToListAsync();
 
         return routes;

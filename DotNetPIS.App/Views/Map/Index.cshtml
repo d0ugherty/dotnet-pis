@@ -12,9 +12,9 @@
 <div id="map">
 </div>
 <div>
-    @foreach (var item in Model.SeptaTrainMarkers)
+    @foreach (var item in Model.Shapes)
     {
-    <p>@item.Latitude , @item.Longitude</p>
+    <p>@item.ShapePtLat , @item.ShapePtLon</p>
     }
 </div>
 </body>

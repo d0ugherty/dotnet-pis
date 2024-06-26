@@ -55,7 +55,7 @@ namespace DotNetPIS.App.Controllers
 
             List<Arrival> arrivals = await GetTrainData(stopName);
 
-            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", 2);
+            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", RouteType.Rail);
 
             var viewModel = new InfoBoardViewModel
             {
