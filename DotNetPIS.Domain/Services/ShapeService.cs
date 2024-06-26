@@ -28,22 +28,15 @@ public class ShapeService
     
     public async Task<List<Shape>> GetShapesByRoute(int routeId)
     {
-        var shapes = new List<Shape>();
-        
-        List<Trip> routeTrips = await _tripRepo.GetAll()
-            .Where(trip => trip.RouteId == routeId)
-            .Distinct()
+        Trip routeTrip = await _tripRepo.GetAll()
+            .FirstOrDefaultAsync(trip => trip.RouteId == routeId) 
+                         ?? throw new InvalidOperationException($"No trips found for route ID {routeId}");
+
+        List<Shape> shapes = await _tripShapeRepo.GetAll()
+            .Where(ts => ts.TripId == routeTrip.Id)
+            .Select(ts => ts.Shape)
             .ToListAsync();
         
-        foreach (var trip in routeTrips)
-        {
-            List<Shape> tripShapes = _tripShapeRepo.GetAll()
-                .Where(ts => ts.TripId == trip.Id)
-                .Select(ts => ts.Shape)
-                .ToList()!;
-            
-            shapes.AddRange(tripShapes);
-        }
         return shapes;
     }
 }
