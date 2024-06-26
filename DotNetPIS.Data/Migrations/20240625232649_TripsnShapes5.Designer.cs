@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetPIS.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240612180309_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240625232649_TripsnShapes5")]
+    partial class TripsnShapes5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -284,6 +284,7 @@ namespace DotNetPIS.Data.Migrations
                         .HasColumnType("REAL");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SourceId")
@@ -369,7 +370,7 @@ namespace DotNetPIS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ShapeId")
+                    b.Property<int?>("ShapeId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ShortName")
@@ -389,6 +390,24 @@ namespace DotNetPIS.Data.Migrations
                     b.HasIndex("SourceId");
 
                     b.ToTable("Trips");
+                });
+
+            modelBuilder.Entity("DotNetPIS.Domain.Models.GTFS.TripShape", b =>
+                {
+                    b.Property<int>("TripId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ShapeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("TripId", "ShapeId");
+
+                    b.HasIndex("ShapeId");
+
+                    b.ToTable("TripShapes");
                 });
 
             modelBuilder.Entity("DotNetPIS.Domain.Models.GTFS.Agency", b =>
@@ -504,6 +523,25 @@ namespace DotNetPIS.Data.Migrations
                     b.Navigation("Source");
                 });
 
+            modelBuilder.Entity("DotNetPIS.Domain.Models.GTFS.TripShape", b =>
+                {
+                    b.HasOne("DotNetPIS.Domain.Models.GTFS.Shape", "Shape")
+                        .WithMany()
+                        .HasForeignKey("ShapeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNetPIS.Domain.Models.GTFS.Trip", "Trip")
+                        .WithMany("TripShapes")
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shape");
+
+                    b.Navigation("Trip");
+                });
+
             modelBuilder.Entity("DotNetPIS.Domain.Models.GTFS.Agency", b =>
                 {
                     b.Navigation("Routes");
@@ -529,6 +567,8 @@ namespace DotNetPIS.Data.Migrations
             modelBuilder.Entity("DotNetPIS.Domain.Models.GTFS.Trip", b =>
                 {
                     b.Navigation("StopTimes");
+
+                    b.Navigation("TripShapes");
                 });
 #pragma warning restore 612, 618
         }

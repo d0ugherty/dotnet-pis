@@ -19,9 +19,11 @@ public class Trip
 
     public int DirectionId { get; set; }
 
-    public int ShapeId { get; set; }
+    public int? ShapeId { get; set; }
 
     public List<StopTime> StopTimes { get; set; }
+    
+    public List<TripShape> TripShapes { get; set; }
 
     [ForeignKey("Route")]
     public int RouteId { get; set; }
@@ -35,5 +37,6 @@ public class Trip
     public Trip()
     {
         StopTimes = new List<StopTime>();
+        TripShapes = new List<TripShape>();
     }
 }

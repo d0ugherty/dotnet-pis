@@ -462,13 +462,14 @@ public class DataImport
                     DirectionId = record.direction_id,
                     RouteId = route!.Id,
                     Route = route,
+                    ShapeId = record.shape_id,
                     SourceId = source.Id,
                     Source = source
                 };
 
                 _context.Trips.Add(trip);
                 route.Trips.Add(trip);
-
+                
                 row++;
             }
             Console.WriteLine("Saving changes.");
@@ -482,6 +483,39 @@ public class DataImport
                               $"{ex}");
             throw;
         }
+    }
+
+    private void AddTripShapes(Source source)
+    {
+        Console.WriteLine($"Adding Trip-Shapes");
+        List<Shape> shapes = _context.Shapes.Where(shape => shape.SourceId == source.Id).ToList();
+
+        int row = 1;
+        foreach (var shape in shapes)
+        {
+            Console.Write($"{new string(' ', 20)}Importing row {row}\r");
+            
+            List<Trip> trips = _context.Trips.Where(t => t.ShapeId == shape.ShapeNumber).ToList();
+
+            foreach (var trip in trips)
+            {
+                var tripShape = new TripShape
+                {
+                    Trip = trip,
+                    TripId = trip.Id,
+                    Shape = shape,
+                    ShapeId = shape.Id
+                };
+
+                _context.TripShapes.Add(tripShape);
+                trip.TripShapes.Add(tripShape);
+            }
+
+            row++;
+        }
+        
+        Console.WriteLine($"Saving changes...");
+        _context.SaveChanges();
     }
 
     private IEnumerable<T> ReadCsv<T>(string filePath)
@@ -573,6 +607,7 @@ public class DataImport
             foreach (var source in sources)
             {
                 ImportDataFromFiles(source);
+                AddTripShapes(source);
             }
         }
         else
@@ -582,6 +617,7 @@ public class DataImport
             Source source = _context.Sources.FirstOrDefault(s => s.Name.Equals(dataSourceName))!;
 
             ImportDataFromFiles(source);
+            AddTripShapes(source);
         }
 
         Console.WriteLine("Done.");

@@ -27,9 +27,11 @@ public class Context : DbContext
 
     public DbSet<Trip> Trips { get; set; } = null!;
 
+    public DbSet<TripShape> TripShapes { get; set; } = null!;
+
     public Context(DbContextOptions options) : base(options)
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,7 +50,7 @@ public class Context : DbContext
 
         modelBuilder.Entity<Fare>()
             .HasKey(f => f.Id);
-
+        
         modelBuilder.Entity<Agency>()
             .HasKey(a => a.Id);
 
@@ -61,6 +63,24 @@ public class Context : DbContext
             .HasMany(trip => trip.StopTimes)
             .WithOne(st => st.Trip)
             .HasForeignKey(st => st.TripId);
+
+        modelBuilder.Entity<Shape>()
+            .HasOne(shape => shape.Source)
+            .WithMany()
+            .HasForeignKey(shape => shape.SourceId);
+
+        modelBuilder.Entity<TripShape>()
+            .HasKey(ts => new { ts.TripId, ts.ShapeId });
+        
+        modelBuilder.Entity<TripShape>()
+            .HasOne(ts => ts.Trip)
+            .WithMany(t => t.TripShapes)
+            .HasForeignKey(ts => ts.TripId);
+
+        modelBuilder.Entity<TripShape>()
+            .HasOne(ts => ts.Shape)
+            .WithMany()
+            .HasForeignKey(ts => ts.ShapeId);
 
         modelBuilder.Entity<Stop>()
             .HasMany(stop => stop.StopTimes)

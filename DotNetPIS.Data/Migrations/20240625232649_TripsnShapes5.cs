@@ -5,7 +5,7 @@
 namespace DotNetPIS.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class TripsnShapes5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -146,7 +146,7 @@ namespace DotNetPIS.Data.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     StopNumber = table.Column<string>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Latitude = table.Column<float>(type: "REAL", nullable: false),
                     Longitude = table.Column<float>(type: "REAL", nullable: false),
@@ -228,7 +228,7 @@ namespace DotNetPIS.Data.Migrations
                     ShortName = table.Column<string>(type: "TEXT", nullable: true),
                     LongName = table.Column<string>(type: "TEXT", nullable: true),
                     DirectionId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ShapeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ShapeId = table.Column<int>(type: "INTEGER", nullable: true),
                     RouteId = table.Column<int>(type: "INTEGER", nullable: false),
                     SourceId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
@@ -274,6 +274,31 @@ namespace DotNetPIS.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_StopTimes_Trips_TripId",
+                        column: x => x.TripId,
+                        principalTable: "Trips",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TripShapes",
+                columns: table => new
+                {
+                    TripId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ShapeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TripShapes", x => new { x.TripId, x.ShapeId });
+                    table.ForeignKey(
+                        name: "FK_TripShapes_Shapes_ShapeId",
+                        column: x => x.ShapeId,
+                        principalTable: "Shapes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TripShapes_Trips_TripId",
                         column: x => x.TripId,
                         principalTable: "Trips",
                         principalColumn: "Id",
@@ -334,6 +359,11 @@ namespace DotNetPIS.Data.Migrations
                 name: "IX_Trips_SourceId",
                 table: "Trips",
                 column: "SourceId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TripShapes_ShapeId",
+                table: "TripShapes",
+                column: "ShapeId");
         }
 
         /// <inheritdoc />
@@ -349,16 +379,19 @@ namespace DotNetPIS.Data.Migrations
                 name: "FareAttributesTbl");
 
             migrationBuilder.DropTable(
-                name: "Shapes");
+                name: "StopTimes");
 
             migrationBuilder.DropTable(
-                name: "StopTimes");
+                name: "TripShapes");
 
             migrationBuilder.DropTable(
                 name: "Fares");
 
             migrationBuilder.DropTable(
                 name: "Stops");
+
+            migrationBuilder.DropTable(
+                name: "Shapes");
 
             migrationBuilder.DropTable(
                 name: "Trips");
