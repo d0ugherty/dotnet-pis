@@ -18,13 +18,14 @@ internal class Program
         var importService = new DataImport(new Context(options));
 
         string sourceName = "";
-
+        string transitType = "";
         if (args.Length > 0)
         {
             sourceName = args[0];
+            transitType = args[1];
         }
 
-        importService.ImportGtfsData(sourceName);
+        importService.ImportGtfsData(sourceName, transitType);
 
         Console.WriteLine("Data import completed successfully.");
     }

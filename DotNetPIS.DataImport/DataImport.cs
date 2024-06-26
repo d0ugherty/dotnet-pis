@@ -556,32 +556,58 @@ public class DataImport
         }
     }
 
-    private void ImportDataFromFiles(Source source)
+    private void ImportDataFromFiles(Source source, string transitType="")
     {
-        List<string> transitTypes = ["rail", "bus"];
-
-        foreach (var type in transitTypes)
+        if (transitType.Equals(""))
         {
-            ImportTry($"{source.FilePath}/{type}/agency.csv", filePath => ImportAgencies(filePath, source));
+            List<string> transitTypes = ["rail", "bus"];
 
-            ImportTry($"{source.FilePath}/{type}/calendar.csv", filePath => ImportCalendars(filePath, source));
+            foreach (var type in transitTypes)
+            {
+                ImportTry($"{source.FilePath}/{type}/agency.csv", filePath => ImportAgencies(filePath, source));
 
-            ImportTry($"{source.FilePath}/{type}/calendar_dates.csv", ImportCalendarDates);
+                ImportTry($"{source.FilePath}/{type}/calendar.csv", filePath => ImportCalendars(filePath, source));
 
-            ImportTry($"{source.FilePath}/{type}/fare_rules.csv", filePath => ImportFares(filePath, source));
+                ImportTry($"{source.FilePath}/{type}/calendar_dates.csv", ImportCalendarDates);
 
-            ImportTry($"{source.FilePath}/{type}/fare_attributes.csv",
+                ImportTry($"{source.FilePath}/{type}/fare_rules.csv", filePath => ImportFares(filePath, source));
+
+                ImportTry($"{source.FilePath}/{type}/fare_attributes.csv",
+                    filePath => ImportFareAttributes(filePath, source));
+
+                ImportTry($"{source.FilePath}/{type}/routes.csv", filePath => ImportRoutes(filePath, source));
+
+                ImportTry($"{source.FilePath}/{type}/trips.csv", filePath => ImportTrips(filePath, source));
+
+                ImportTry($"{source.FilePath}/{type}/shapes.csv", filePath => ImportShapes(filePath, source));
+
+                ImportTry($"{source.FilePath}/{type}/stops.csv", filePath => ImportStops(filePath, source));
+
+                ImportTry($"{source.FilePath}/{type}/stop_times.csv", filePath => ImportStopTimes(filePath, source));
+            }
+        }
+        else
+        {
+            ImportTry($"{source.FilePath}/{transitType}/agency.csv", filePath => ImportAgencies(filePath, source));
+
+            ImportTry($"{source.FilePath}/{transitType}/calendar.csv", filePath => ImportCalendars(filePath, source));
+
+            ImportTry($"{source.FilePath}/{transitType}/calendar_dates.csv", ImportCalendarDates);
+
+            ImportTry($"{source.FilePath}/{transitType}/fare_rules.csv", filePath => ImportFares(filePath, source));
+
+            ImportTry($"{source.FilePath}/{transitType}/fare_attributes.csv",
                 filePath => ImportFareAttributes(filePath, source));
 
-            ImportTry($"{source.FilePath}/{type}/routes.csv", filePath => ImportRoutes(filePath, source));
+            ImportTry($"{source.FilePath}/{transitType}/routes.csv", filePath => ImportRoutes(filePath, source));
 
-            ImportTry($"{source.FilePath}/{type}/trips.csv", filePath => ImportTrips(filePath, source));
+            ImportTry($"{source.FilePath}/{transitType}/trips.csv", filePath => ImportTrips(filePath, source));
 
-            ImportTry($"{source.FilePath}/{type}/shapes.csv", filePath => ImportShapes(filePath, source));
+            ImportTry($"{source.FilePath}/{transitType}/shapes.csv", filePath => ImportShapes(filePath, source));
 
-            ImportTry($"{source.FilePath}/{type}/stops.csv", filePath => ImportStops(filePath, source));
+            ImportTry($"{source.FilePath}/{transitType}/stops.csv", filePath => ImportStops(filePath, source));
 
-            ImportTry($"{source.FilePath}/{type}/stop_times.csv", filePath => ImportStopTimes(filePath, source));
+            ImportTry($"{source.FilePath}/{transitType}/stop_times.csv", filePath => ImportStopTimes(filePath, source));
         }
     }
 
@@ -596,7 +622,7 @@ public class DataImport
         _context.SaveChanges();
     }
 
-    public void ImportGtfsData(string dataSourceName = "")
+    public void ImportGtfsData(string dataSourceName = "", string type = "")
     {
         if (dataSourceName.Equals(""))
         {
@@ -616,7 +642,7 @@ public class DataImport
 
             Source source = _context.Sources.FirstOrDefault(s => s.Name.Equals(dataSourceName))!;
 
-            ImportDataFromFiles(source);
+            ImportDataFromFiles(source, type);
             AddTripShapes(source);
         }
 
