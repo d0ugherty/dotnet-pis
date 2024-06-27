@@ -12,46 +12,36 @@ namespace DotNetPIS.App.Controllers
 
         private readonly StopService _stopService;
         private readonly MapService _mapService;
-        private readonly RouteService _routeService;
         private readonly SeptaRegionalRailService _septaRrService;
         private readonly SeptaTransitService _septaTransitService;
 
         public MapController(StopService stopService, SeptaRegionalRailService septaRrService, 
-            SeptaTransitService septaTransitService, RouteService routeService, MapService mapService)
+            SeptaTransitService septaTransitService, MapService mapService)
         {
             _stopService = stopService;
             _septaRrService = septaRrService;
             _septaTransitService = septaTransitService;
-            _routeService = routeService;
             _mapService = mapService;
         }
         
         [HttpGet("Map")]
         public async Task<ActionResult> Index()
         {
-            bool getTrainData = true;
-            
-            MapViewModel viewModel = await RenderMap();
-            
-            return View(viewModel);
+            return View();
         }
-
-        public async Task<MapViewModel> RenderMap()
+        
+        public async Task<JsonResult> GetTrainData()
         {
             List<TrainView> trainData = await _septaRrService.GetTrainView();
-            
-            List<Stop> stops = await _stopService.GetStopsByAgencyAndRouteType("SEPTA", RouteType.Rail);
 
-            List<Shape> shapeData = await _mapService.GetShapeData(RouteType.Rail, "SEPTA");
-            
-            var viewModel = new MapViewModel
-            {
-                SeptaTrainMarkers = trainData,
-                Stops = stops,
-                Shapes = shapeData
-            };
+            return Json(trainData);
+        }
+        
+        public async Task<JsonResult> GetShapeData(RouteType routeType, string agencyName)
+        {
+            List<Shape> shapeData = await _mapService.GetShapeData(routeType, agencyName);
 
-            return viewModel;
+            return Json(shapeData);
         }
         
     }

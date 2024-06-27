@@ -27,6 +27,7 @@ builder.Services.AddScoped<StopService>();
 builder.Services.AddScoped<ShapeService>();
 builder.Services.AddScoped<SeptaTransitService>();
 builder.Services.AddScoped<RouteService>();
+builder.Services.AddScoped<MapService>();
 
 var app = builder.Build();
 
