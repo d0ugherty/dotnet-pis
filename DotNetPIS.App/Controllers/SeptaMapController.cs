@@ -12,15 +12,10 @@ namespace DotNetPIS.App.Controllers
 
         private readonly StopService _stopService;
         private readonly MapService _mapService;
-        private readonly SeptaRegionalRailService _septaRrService;
-        private readonly SeptaTransitService _septaTransitService;
 
-        public MapController(StopService stopService, SeptaRegionalRailService septaRrService, 
-            SeptaTransitService septaTransitService, MapService mapService)
+        public MapController(StopService stopService, MapService mapService)
         {
             _stopService = stopService;
-            _septaRrService = septaRrService;
-            _septaTransitService = septaTransitService;
             _mapService = mapService;
         }
         
@@ -32,7 +27,7 @@ namespace DotNetPIS.App.Controllers
         
         public async Task<JsonResult> GetTrainData()
         {
-            List<TrainView> trainData = await _septaRrService.GetTrainView();
+            List<TrainView> trainData = await _mapService.GetTrainView();
 
             return Json(trainData);
         }

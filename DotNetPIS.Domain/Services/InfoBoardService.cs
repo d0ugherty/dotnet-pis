@@ -1,15 +1,14 @@
 using DotNetPIS.Domain.Interfaces;
-using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Models.SEPTA;
 using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.Domain.Services;
 
-public class SeptaRegionalRailService : BaseService
+public class InfoBoardService : BaseService
 {
     private readonly ISeptaApiClient _septaApiClient;
 
-    public SeptaRegionalRailService(ISeptaApiClient septaApiClient)
+    public InfoBoardService(ISeptaApiClient septaApiClient)
     {
         _septaApiClient = septaApiClient;
     }
@@ -56,38 +55,6 @@ public class SeptaRegionalRailService : BaseService
             stationArrivals.Add(arrival);
         }
         return stationArrivals;
-    }
-
-    public async Task<List<TrainView>> GetTrainView()
-    {
-        JToken response = await _septaApiClient.RegionalRailTrainView();
-        
-        var trainsOnSystem = new List<TrainView>();
-
-        foreach (JToken trainData in response)
-        {
-            
-            var train = new TrainView
-            {
-                Latitude = ParseFloatValue(trainData, "lat"),
-                Longitude = ParseFloatValue(trainData, "lon"),
-                TrainNumber = RemoveSpecialCharacters(ParseStringValue(trainData, "trainno")),
-                ServiceType = ParseStringValue(trainData, "service"),
-                Destination = ParseStringValue(trainData, "destination"),
-                CurrentStop = ParseStringValue(trainData, "currentstop"),
-                NextStop = ParseStringValue(trainData, "nextstop"),
-                Line = ParseStringValue(trainData, "line"),
-                Consist = ParseStringValue(trainData, "consist"),
-                Heading = ParseFloatValue(trainData, "heading"),
-                MinutesLate = ParseIntValue(trainData, "late"),
-                Source = ParseStringValue(trainData, "SOURCE"),
-                Track = ParseStringValue(trainData, "TRACK"),
-                TrackChange = ParseStringValue(trainData, "TRACK_CHANGE")
-            };
-            trainsOnSystem.Add(train);
-        }
-
-        return trainsOnSystem;
     }
 
     public async Task<List<NextToArrive>> GetNextToArrive(string startingStation, string endingStation, int results)

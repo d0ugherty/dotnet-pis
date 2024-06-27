@@ -9,17 +9,17 @@ namespace DotNetPIS.App.Controllers
 {
     public class InfoBoardController : Controller
     {
-        private readonly SeptaRegionalRailService _septaRrService;
+        private readonly InfoBoardService _infoBoardService;
         private readonly StopService _stopService;
 
-        public InfoBoardController(SeptaRegionalRailService septaRrService, StopService stopService)
+        public InfoBoardController(InfoBoardService infoBoardService, StopService stopService)
         {
-            _septaRrService = septaRrService;
+            _infoBoardService = infoBoardService;
             _stopService = stopService;
         }
         
         [HttpGet]
-        public async Task<ActionResult> Index(int stopId = 4)
+        public async Task<ActionResult> Index(int stopId = 14087)
         {
             InfoBoardViewModel viewModel = await RenderBoard(stopId);
             
@@ -34,35 +34,28 @@ namespace DotNetPIS.App.Controllers
             return PartialView("InfoBoard/_Rows", viewModel);
         }
 
-        private async Task<List<Arrival>> GetTrainData(string stationName)
-        {
-            List<Arrival> arrivals = new List<Arrival>();
-
-            List<Arrival> northbound = await _septaRrService.GetRegionalRailArrivals(stationName, "N", 5);
-            List<Arrival> southbound = await _septaRrService.GetRegionalRailArrivals(stationName, "S", 5);
-
-            arrivals.AddRange(northbound);
-            arrivals.AddRange(southbound);
-
-            return arrivals;
-        }
-
         private async Task<InfoBoardViewModel> RenderBoard(int stopId)
         {
+            var allArrivals = new List<Arrival>();
+            
             Stop stop = await _stopService.GetStopById(stopId);
-
-            string stopName = _septaRrService.GtfsNameToApiName(stop.Name);
-
-            List<Arrival> arrivals = await GetTrainData(stopName);
-
+            
             List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", RouteType.Rail);
 
+            string stopName = _infoBoardService.GtfsNameToApiName(stop.Name);
+        
+            List<Arrival> northboundArrivals = await _infoBoardService.GetRegionalRailArrivals(stopName, "N", 5);
+            List<Arrival> southboundArrivals = await _infoBoardService.GetRegionalRailArrivals(stopName, "S", 5);
+            
+            allArrivals.AddRange(northboundArrivals);
+            allArrivals.AddRange(southboundArrivals);
+            
             var viewModel = new InfoBoardViewModel
             {
                 Title = $"Train Information for {stopName}",
                 StationName = stopName,
                 StopId = stopId,
-                Arrivals = arrivals,
+                Arrivals = allArrivals,
                 Stops = stops
             };
 
