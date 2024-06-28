@@ -36,26 +36,20 @@ namespace DotNetPIS.App.Controllers
 
         private async Task<InfoBoardViewModel> RenderBoard(int stopId)
         {
-            var allArrivals = new List<Arrival>();
-            
             Stop stop = await _stopService.GetStopById(stopId);
             
             List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", RouteType.Rail);
 
             string stopName = _infoBoardService.GtfsNameToApiName(stop.Name);
         
-            List<Arrival> northboundArrivals = await _infoBoardService.GetRegionalRailArrivals(stopName, "N", 5);
-            List<Arrival> southboundArrivals = await _infoBoardService.GetRegionalRailArrivals(stopName, "S", 5);
-            
-            allArrivals.AddRange(northboundArrivals);
-            allArrivals.AddRange(southboundArrivals);
+            List<Arrival> arrivals = await _infoBoardService.GetRegionalRailArrivals(stopName, 5);
             
             var viewModel = new InfoBoardViewModel
             {
                 Title = $"Train Information for {stopName}",
                 StationName = stopName,
                 StopId = stopId,
-                Arrivals = allArrivals,
+                Arrivals = arrivals,
                 Stops = stops
             };
 

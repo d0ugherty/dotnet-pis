@@ -13,10 +13,10 @@ public class SeptaApiClient : ISeptaApiClient
         _httpClient = httpClient;
     }
 
-    public async Task<JObject> GetRegionalRailArrivals(string stationName, string direction, int results = 10)
+    public async Task<JObject> GetRegionalRailArrivals(string stationName, int results = 10)
     {
         HttpResponseMessage response = await _httpClient.GetAsync(
-            $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}&direction={direction}");
+            $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}");
 
         JObject data = await ParseResponse(response);
 
