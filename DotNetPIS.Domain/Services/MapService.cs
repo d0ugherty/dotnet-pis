@@ -35,20 +35,21 @@ public class MapService : BaseService
         return shapes;
     }
 
-    public async Task<List<Shape>> GetShapeData(RouteType routeType, string agencyName)
+    public async Task<Dictionary<string, List<Shape>>> GetShapeData(RouteType routeType, string agencyName)
     {
         List<Route> routes = await _routeRepo.GetAll()
             .Where(route => route.Agency != null 
                             && route.Agency.Name.Equals(agencyName) 
                             && route.Type == (int)routeType)
             .ToListAsync();
-        
-        List<Shape> shapes = new List<Shape>();
-            
+
+        var shapes = new Dictionary<string, List<Shape>>();
+
         foreach (var route in routes)
         {
             List<Shape> routeShapes = await GetShapesByRoute(route.Id);
-            shapes.AddRange(routeShapes);
+
+            shapes.TryAdd(route.ShortName, routeShapes);
         }
         
         return shapes;

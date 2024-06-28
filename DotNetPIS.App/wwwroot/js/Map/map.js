@@ -1,6 +1,10 @@
 var map;
 var trainLayer, stationLayer, trolleyLayer, trolleyStopLayer;
 
+const RouteColors = Object.freeze({
+    SEPTA_RR: Symbol('#43647c')
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     initializeMap(39.9628399, -75.148437);
     displayMapShapes("Rail", "SEPTA");
@@ -21,18 +25,24 @@ function initializeMap(lat, lon) {
 }
 
 function displayMapShapes(routeType, agencyName) {
-    var points = [];
     
     $.ajax({
         url: `Map/GetShapeData?routeType=${routeType}&agencyName=${agencyName}`,
         method: 'GET',
         success: function(shapeData) {
             
-            for(const point of shapeData){
-                points.push([point["shapePtLat"], point["shapePtLon"]]);
-            }
-            
-            L.polyline(points, { color: '#43647c'}).addTo(map);
+            Object.keys(shapeData).forEach(key => {
+                const points = [];
+                
+                let shape = shapeData[key]; 
+                
+                for(const point of shape){
+                    points.push([point["shapePtLat"], point["shapePtLon"]]);
+                }
+
+                L.polyline(points, { color: '#43647c'}).addTo(map);
+                
+            });
         }
     });
 }

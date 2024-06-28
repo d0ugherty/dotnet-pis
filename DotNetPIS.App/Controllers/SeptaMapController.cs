@@ -34,7 +34,7 @@ namespace DotNetPIS.App.Controllers
         
         public async Task<JsonResult> GetShapeData(RouteType routeType, string agencyName)
         {
-            List<Shape> shapeData = await _mapService.GetShapeData(routeType, agencyName);
+            Dictionary<string, List<Shape>> shapeData = await _mapService.GetShapeData(routeType, agencyName);
 
             return Json(shapeData);
         }

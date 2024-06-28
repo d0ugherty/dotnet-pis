@@ -25,6 +25,9 @@
     <Reference Include="Microsoft.EntityFrameworkCore">
       <HintPath>..\..\..\..\..\..\..\home\thom\.nuget\packages\microsoft.entityframeworkcore\9.0.0-preview.5.24306.3\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
     </Reference>
+    <Reference Include="NuGet.Packaging">
+      <HintPath>..\..\..\..\..\..\..\home\thom\.nuget\packages\nuget.packaging\6.9.1\lib\net5.0\NuGet.Packaging.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
