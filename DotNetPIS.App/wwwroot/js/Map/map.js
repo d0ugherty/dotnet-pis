@@ -1,9 +1,17 @@
 var map;
 var trainLayer, stationLayer, trolleyLayer, trolleyStopLayer;
 
+const RouteColors = Object.freeze({
+    SEPTA_RR: Symbol('#43647c')
+});
+
 document.addEventListener('DOMContentLoaded', function() {
+    
     initializeMap(39.9628399, -75.148437);
+    
     displayMapShapes("Rail", "SEPTA");
+    
+    setInterval(displayTrainMarkers, 2000, trainLayer);
 });
 
 function initializeMap(lat, lon) {
@@ -21,18 +29,54 @@ function initializeMap(lat, lon) {
 }
 
 function displayMapShapes(routeType, agencyName) {
-    var points = [];
     
     $.ajax({
         url: `Map/GetShapeData?routeType=${routeType}&agencyName=${agencyName}`,
         method: 'GET',
         success: function(shapeData) {
             
-            for(const point of shapeData){
-                points.push([point["shapePtLat"], point["shapePtLon"]]);
-            }
-            
-            L.polyline(points, { color: '#43647c'}).addTo(map);
+            Object.keys(shapeData).forEach(key => {
+                const points = [];
+                
+                let shape = shapeData[key]; 
+                
+                for(const point of shape){
+                    points.push([point["shapePtLat"], point["shapePtLon"]]);
+                }
+
+                L.polyline(points, { color: '#43647c'}).addTo(map);
+                
+            });
         }
     });
+}
+
+function displayTrainMarkers(trainLayer){
+    trainLayer.clearLayers();
+    
+    trainLayer.addTo(map);
+    
+    $.ajax({
+        url: `Map/GetTrainData/`,
+        method: 'GET',
+        success: function(trainData) {
+            
+            for(const train of trainData){
+
+                let trainMarker = L.marker([train["latitude"], train["longitude"]]).addTo(trainLayer);
+                
+                let popup = L.popup({ "autoClose" : false, "closeOnClock" : null});
+                
+                let content = `<b>Train No. </b> ${train["trainNumber"]}<br>
+                                <b>Next Stop: </b> ${train["nextStop"]} <br>
+                                <b>Line: </b> ${train["line"]}<br>
+                                <b> Destination: </b> ${train["destination"]}`;
+                
+                popup.setContent(content);
+                
+                trainMarker.bindPopup(popup);
+            }
+        }
+    })
+        
 }
