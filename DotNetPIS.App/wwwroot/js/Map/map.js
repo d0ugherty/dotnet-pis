@@ -6,8 +6,12 @@ const RouteColors = Object.freeze({
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    
     initializeMap(39.9628399, -75.148437);
+    
     displayMapShapes("Rail", "SEPTA");
+    
+    setInterval(displayTrainMarkers, 2000, trainLayer);
 });
 
 function initializeMap(lat, lon) {
@@ -45,4 +49,34 @@ function displayMapShapes(routeType, agencyName) {
             });
         }
     });
+}
+
+function displayTrainMarkers(trainLayer){
+    trainLayer.clearLayers();
+    
+    trainLayer.addTo(map);
+    
+    $.ajax({
+        url: `Map/GetTrainData/`,
+        method: 'GET',
+        success: function(trainData) {
+            
+            for(const train of trainData){
+
+                let trainMarker = L.marker([train["latitude"], train["longitude"]]).addTo(trainLayer);
+                
+                let popup = L.popup({ "autoClose" : false, "closeOnClock" : null});
+                
+                let content = `<b>Train No. </b> ${train["trainNumber"]}<br>
+                                <b>Next Stop: </b> ${train["nextStop"]} <br>
+                                <b>Line: </b> ${train["line"]}<br>
+                                <b> Destination: </b> ${train["destination"]}`;
+                
+                popup.setContent(content);
+                
+                trainMarker.bindPopup(popup);
+            }
+        }
+    })
+        
 }

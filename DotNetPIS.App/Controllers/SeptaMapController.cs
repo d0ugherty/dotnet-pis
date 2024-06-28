@@ -10,12 +10,10 @@ namespace DotNetPIS.App.Controllers
     public class MapController : Controller
     {
 
-        private readonly StopService _stopService;
         private readonly MapService _mapService;
 
-        public MapController(StopService stopService, MapService mapService)
+        public MapController(MapService mapService)
         {
-            _stopService = stopService;
             _mapService = mapService;
         }
         
