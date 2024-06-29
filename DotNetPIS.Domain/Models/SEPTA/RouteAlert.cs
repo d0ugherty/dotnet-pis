@@ -9,9 +9,9 @@ public class RouteAlert
     public string AdvisoryMessage { get; set; }
     public string DetourMessage { get; set; }
     public string DetourStartLocation { get; set; }
-    public DateTime DetourStartDateTime { get; set; }
-    public DateTime DetourEndDateTime { get; set; }
+    public string DetourStartDateTime { get; set; }
+    public string DetourEndDateTime { get; set; }
     public string DetourReason { get; set; }
-    public DateTime LastUpdated { get; set; }
+    public string LastUpdated { get; set; }
     public bool IsSnow { get; set; }
 }

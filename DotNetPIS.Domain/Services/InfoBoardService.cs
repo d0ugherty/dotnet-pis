@@ -131,7 +131,8 @@ public class InfoBoardService : BaseService
 
     private List<Arrival> SortByTime(List<Arrival> arrivals)
     {
-        List<Arrival> sortedList = arrivals.OrderBy(a => DateTime.ParseExact(a.DepartTime, "h:mm tt", CultureInfo.InvariantCulture))
+        List<Arrival> sortedList = arrivals
+            .OrderBy(a => DateTime.ParseExact(a.DepartTime, "h:mm tt", CultureInfo.InvariantCulture))
             .ToList();
 
         return sortedList;

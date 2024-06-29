@@ -9,4 +9,5 @@ public interface ISeptaApiClient
     Task<JObject> GetRegionalRailSchedule(string trainNumber);
     Task<JObject> GetNextToArrive(string startStation, string endStation, int results);
     Task<JObject> TransitView(string routeNumber);
+    Task<JToken> GetAlertData(string routeString = "");
 }

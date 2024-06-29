@@ -72,12 +72,20 @@ public class SeptaApiClient : ISeptaApiClient
         return data;
     }
 
-    public async Task<JObject> GetAlertData(string routeId)
+    public async Task<JToken> GetAlertData(string routeId = "")
     {
-        HttpResponseMessage response =
-            await _httpClient.GetAsync($"https://www3.septa.org/api/Alerts/get_alert_data.php?route_id={routeId}");
+        HttpResponseMessage response;
+        
+        if (routeId != "")
+        { 
+            response = await _httpClient.GetAsync($"https://www3.septa.org/api/Alerts/get_alert_data.php?route_id={routeId}");
+        }
+        else
+        {
+            response = await _httpClient.GetAsync($"https://www3.septa.org/api/Alerts/get_alert_data.php");
+        }
 
-        JObject data = await ParseResponse(response);
+        JToken data = JToken.Parse(await response.Content.ReadAsStringAsync());;
 
         return data;
     }
