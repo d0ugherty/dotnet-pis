@@ -26,6 +26,7 @@ builder.Services.AddScoped<StopService>();
 builder.Services.AddScoped<RouteService>();
 builder.Services.AddScoped<MapService>();
 builder.Services.AddScoped<InfoBoardService>();
+builder.Services.AddScoped<AlertService>();
 
 var app = builder.Build();
 

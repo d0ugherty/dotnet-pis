@@ -59,7 +59,7 @@ public class AlertService : BaseService
                 RouteName = ParseStringValue(alertData, "route_name"),
                 CurrentMessage = ParseStringValue(alertData, "current_message"),
                 AdvisoryId = ParseStringValue(alertData, "advisory_id"),
-                AdvisoryMessage = ParseStringValue(alertData, "advisory_message"),
+                AdvisoryMessage = DecodeHtmlString(alertData, "advisory_message"),
                 DetourMessage = ParseStringValue(alertData, "detour_message"),
                 DetourStartLocation = ParseStringValue(alertData, "detour_start_location"),
                 DetourStartDateTime = ParseStringValue(alertData, "detour_start_data_time"),

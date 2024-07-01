@@ -1,4 +1,5 @@
 using System.Text;
+using System.Web;
 using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.Domain.Services;
@@ -42,11 +43,21 @@ public abstract class BaseService
 
     protected bool ParseBooleanValue(JToken token, string propertyName)
     {
-        string boolString = ParseStringValue(token, propertyName);
+        string boolString = ParseStringValue(token, propertyName).ToLower();
 
-        bool result = bool.Parse(boolString);
+        if (boolString.Equals("false") || boolString.Equals("n"))
+        {
+            return false;
+        }
+        
+        return true;
+    }
 
-        return result;
+    protected string DecodeHtmlString(JToken token, string input)
+    {
+        string parsedString = ParseStringValue(token, input);
+        
+        return HttpUtility.HtmlDecode(parsedString);
     }
 
     protected static string RemoveSpecialCharacters(string str)
