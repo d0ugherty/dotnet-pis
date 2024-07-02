@@ -7,10 +7,12 @@ namespace DotNetPIS.Domain.Services;
 public class RouteService
 {
     private readonly IRepository<Route, int> _routeRepo;
+    private readonly IRepository<Stop, int> _stopRepo;
 
-    public RouteService(IRepository<Route, int> routeRepo)
+    public RouteService(IRepository<Route, int> routeRepo, IRepository<Stop, int> stopRepo)
     {
         _routeRepo = routeRepo;
+        _stopRepo = stopRepo;
     }
 
     public async Task<List<Route>> GetRoutesByAgencyAndType(string agencyName, RouteType routeType)

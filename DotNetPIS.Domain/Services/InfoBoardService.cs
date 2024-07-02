@@ -18,7 +18,7 @@ public class InfoBoardService : BaseService
     {
         var stationArrivals = new List<Arrival>();
         
-        string[] directions = ["Northbound", "Southbound"];
+        string[] directions = { "Northbound", "Southbound" };
         
         JObject response = await _septaApiClient.GetRegionalRailArrivals(stationName, results);
 
@@ -28,7 +28,13 @@ public class InfoBoardService : BaseService
 
         for (int idx = 0; idx < dataLength; idx++)
         {
+<<<<<<< HEAD
             if (data.Value[idx]!= null)
+=======
+            JToken arrivals = data.Value[idx]?[directions[idx]] ?? throw new InvalidOperationException();
+            
+            foreach (var trainData in arrivals)
+>>>>>>> dfa47fa17c9e76b500ce68c183d4b38e42f8d279
             {
                 JToken? arrivals = data.Value[idx][directions[idx]];
 
@@ -134,7 +140,8 @@ public class InfoBoardService : BaseService
 
     private List<Arrival> SortByTime(List<Arrival> arrivals)
     {
-        List<Arrival> sortedList = arrivals.OrderBy(a => DateTime.ParseExact(a.DepartTime, "h:mm tt", CultureInfo.InvariantCulture))
+        List<Arrival> sortedList = arrivals
+            .OrderBy(a => DateTime.ParseExact(a.DepartTime, "h:mm tt", CultureInfo.InvariantCulture))
             .ToList();
 
         return sortedList;

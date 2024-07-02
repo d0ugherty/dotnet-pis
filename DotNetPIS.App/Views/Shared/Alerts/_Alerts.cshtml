@@ -1,0 +1,6 @@
+@foreach (var alert in @Model.SeptaAlerts)
+{
+    <div id="alert">
+        @Html.Raw(alert.AdvisoryMessage)
+    </div>
+}

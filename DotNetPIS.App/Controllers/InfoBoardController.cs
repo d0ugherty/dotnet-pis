@@ -11,11 +11,13 @@ namespace DotNetPIS.App.Controllers
     {
         private readonly InfoBoardService _infoBoardService;
         private readonly StopService _stopService;
+        private readonly AlertService _alertService;
 
-        public InfoBoardController(InfoBoardService infoBoardService, StopService stopService)
+        public InfoBoardController(InfoBoardService infoBoardService, StopService stopService, AlertService alertService)
         {
             _infoBoardService = infoBoardService;
             _stopService = stopService;
+            _alertService = alertService;
         }
         
         [HttpGet]
@@ -38,8 +40,10 @@ namespace DotNetPIS.App.Controllers
         {
             Stop stop = await _stopService.GetStopById(stopId);
             
+            List<RouteAlert> routeAlerts = await _alertService.GetSeptaStopAlerts(stopId);
+            
             List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", RouteType.Rail);
-
+            
             string stopName = _infoBoardService.GtfsNameToApiName(stop.Name);
         
             List<Arrival> arrivals = await _infoBoardService.GetRegionalRailArrivals(stopName, 5);
@@ -50,6 +54,7 @@ namespace DotNetPIS.App.Controllers
                 StationName = stopName,
                 StopId = stopId,
                 Arrivals = arrivals,
+                SeptaAlerts = routeAlerts,
                 Stops = stops
             };
 
