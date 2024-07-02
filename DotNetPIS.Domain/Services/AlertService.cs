@@ -57,7 +57,9 @@ public class AlertService : BaseService
 
             AlertType alertType = ToSeptaAlertType(route.Type);
 
-            List<RouteAlert> alerts = await GetSeptaRouteAlerts(routeId, alertType);
+            string apiRouteId = ToSeptaRouteAlertId(routeId);
+
+            List<RouteAlert> alerts = await GetSeptaRouteAlerts(apiRouteId, alertType);
             
             stopAlerts.AddRange(alerts);
         }
@@ -102,6 +104,26 @@ public class AlertService : BaseService
             2 => AlertType.Rr,
             3 => AlertType.Bus,
             _ => AlertType.Bus
+        };
+    }
+
+    /**
+    *  Because the route ID inputs don't match their GTFS data
+    *
+    */
+    private string ToSeptaRouteAlertId(string routeId)
+    {
+        return routeId switch
+        {
+            "AIR" => "apt",
+            "FOX" => "fxc",
+            "LAN" => "landdoy",
+            "TRE" => "trent",
+            "WAR" => "warm",
+            "WIL" => "wilm",
+            "WTR" => "wtren",
+            "GLN" => "gc",
+            _ => routeId
         };
     }
 }
