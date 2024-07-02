@@ -6,6 +6,10 @@
 
 <h1>@Model.Title</h1>
 
+<div id="current-time">
+    @await Html.PartialAsync("Components/_Time")
+</div>
+
 <div id="train-info-board">
     @await Html.PartialAsync("../Shared/InfoBoard/_Arrivals", Model, ViewData)
 </div>
@@ -18,6 +22,7 @@
     @await Html.PartialAsync("Alerts/_Alerts", Model, ViewData)
 </div>
 
+<script src="~/js/InfoBoard/time.js"></script>
 
 
 
