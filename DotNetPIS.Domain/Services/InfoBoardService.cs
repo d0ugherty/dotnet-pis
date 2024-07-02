@@ -28,8 +28,10 @@ public class InfoBoardService : BaseService
 
         for (int idx = 0; idx < dataLength; idx++)
         {
-            if (data.Value[idx] != null)
+            if (data.Value[idx] != null && data.Value[idx].HasValues)
             {
+                Console.WriteLine($"data.Value[idx] = {data.Value[idx]}");
+                
                 JToken arrivals = data.Value[idx]?[directions[idx]] ?? throw new InvalidOperationException();
 
                 foreach (var trainData in arrivals)
