@@ -28,17 +28,11 @@ public class InfoBoardService : BaseService
 
         for (int idx = 0; idx < dataLength; idx++)
         {
-<<<<<<< HEAD
-            if (data.Value[idx]!= null)
-=======
-            JToken arrivals = data.Value[idx]?[directions[idx]] ?? throw new InvalidOperationException();
-            
-            foreach (var trainData in arrivals)
->>>>>>> dfa47fa17c9e76b500ce68c183d4b38e42f8d279
+            if (data.Value[idx] != null)
             {
-                JToken? arrivals = data.Value[idx][directions[idx]];
+                JToken arrivals = data.Value[idx]?[directions[idx]] ?? throw new InvalidOperationException();
 
-                foreach (var trainData in arrivals!)
+                foreach (var trainData in arrivals)
                 {
                     var arrival = new Arrival
                     {
