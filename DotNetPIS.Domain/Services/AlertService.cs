@@ -10,14 +10,12 @@ public class AlertService : BaseService
 {
     private readonly ISeptaApiClient _septApiClient;
     private readonly IRepository<Stop, int> _stopRepo;
-    private readonly IRepository<Trip, int> _tripRepo;
     private readonly IRepository<StopTime, int> _stopTimeRepo;
 
-    public AlertService(ISeptaApiClient septApiClient, IRepository<Stop, int> stopRepo, IRepository<Trip, int> tripRepo, IRepository<StopTime, int> stopTimeRepo)
+    public AlertService(ISeptaApiClient septApiClient, IRepository<Stop, int> stopRepo, IRepository<StopTime, int> stopTimeRepo)
     {
         _septApiClient = septApiClient;
         _stopRepo = stopRepo;
-        _tripRepo = tripRepo;
         _stopTimeRepo = stopTimeRepo;
     }
 
@@ -41,20 +39,18 @@ public class AlertService : BaseService
         return allAlerts;
     }
     
-    public async Task<List<RouteAlert>> GetSeptaStopAlerts(string stopName)
+    public async Task<List<RouteAlert>> GetSeptaStopAlerts(int stopId)
     {
         var stopAlerts = new List<RouteAlert>();
-        
-        Stop septaStop = await _stopRepo.GetAll()
-                             .FirstOrDefaultAsync(stop => stop.Name.Equals(stopName) && stop.Source.Name.Equals("SEPTA")) 
-                         ?? throw new InvalidOperationException($"No stops found with name {stopName} for SEPTA");
+
+        Stop septaStop = _stopRepo.GetById(stopId);
 
         List<Route> stopRoutes = await _stopTimeRepo.GetAll()
             .Where(stopTime => stopTime.StopId == septaStop.Id)
             .GroupBy(stopTime => stopTime.Trip.RouteId)
             .Select(group => group.First().Trip.Route)
             .ToListAsync();
-
+        
         foreach (var route in stopRoutes)
         {
             string routeId = route.RouteNumber;
@@ -101,10 +97,10 @@ public class AlertService : BaseService
     {
         return routeType switch
         {
-            0 => AlertType.Bus,
+            0 => AlertType.Trolley,
             1 => AlertType.Rr,
-            2 => AlertType.Trolley,
-            3 => AlertType.Rr,
+            2 => AlertType.Rr,
+            3 => AlertType.Bus,
             _ => AlertType.Bus
         };
     }

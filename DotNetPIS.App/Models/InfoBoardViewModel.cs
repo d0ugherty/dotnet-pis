@@ -11,4 +11,5 @@ public class InfoBoardViewModel
     public List<Arrival> Arrivals { get; set; } = new List<Arrival>();
     public List<SelectListItem>? Stops { get; set; }
     public int StopId { get; set; }
+    public List<RouteAlert> SeptaAlerts { get; set; } = new List<RouteAlert>();
 }

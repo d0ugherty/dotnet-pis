@@ -18,7 +18,7 @@ public class InfoBoardService : BaseService
     {
         var stationArrivals = new List<Arrival>();
         
-        string[] directions = ["Northbound", "Southbound"];
+        string[] directions = { "Northbound", "Southbound" };
         
         JObject response = await _septaApiClient.GetRegionalRailArrivals(stationName, results);
 
@@ -28,9 +28,9 @@ public class InfoBoardService : BaseService
 
         for (int idx = 0; idx < dataLength; idx++)
         {
-            JToken? arrivals = data.Value[idx][directions[idx]];
+            JToken arrivals = data.Value[idx]?[directions[idx]] ?? throw new InvalidOperationException();
             
-            foreach (var trainData in arrivals!)
+            foreach (var trainData in arrivals)
             {
                 var arrival = new Arrival
                 {
