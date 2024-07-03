@@ -49,7 +49,10 @@ public class MapService : BaseService
         {
             List<Shape> routeShapes = await GetShapesByRoute(route.Id);
 
-            shapes.TryAdd(route.ShortName, routeShapes);
+            if (route.ShortName != null)
+            {
+                shapes.TryAdd(route.ShortName, routeShapes);
+            }
         }
         
         return shapes;

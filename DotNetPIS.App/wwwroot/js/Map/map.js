@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     displayMapShapes("Rail", "SEPTA");
     
+    displayTrainMarkers(trainLayer);
+    
     setInterval(displayTrainMarkers, 5000, trainLayer);
 });
 
