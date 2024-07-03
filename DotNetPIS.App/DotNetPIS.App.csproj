@@ -19,8 +19,6 @@
 
   <ItemGroup>
     <Folder Include="Views\InfoBoard\" />
-    <Folder Include="wwwroot\css\Alerts\" />
-    <Folder Include="wwwroot\css\InfoBoard\" />
   </ItemGroup>
 
   <PropertyGroup>
