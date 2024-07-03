@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="~/css/traininfo.css" asp-append-version="true" />
-
 @model InfoBoardViewModel
 
 @{
@@ -7,6 +5,10 @@
 }
 
 <h1>@Model.Title</h1>
+
+<div id="current-time">
+    @await Html.PartialAsync("Components/_Time")
+</div>
 
 <div id="train-info-board">
     @await Html.PartialAsync("../Shared/InfoBoard/_Arrivals", Model, ViewData)
@@ -16,11 +18,11 @@
     @await Html.PartialAsync("Components/_StopSelect", Model, ViewData)
 </div>
 
-<div id="route-alerts">
-    @await Html.PartialAsync("InfoBoard/_RouteAlertsModal", Model)
+<div id="alerts">
+    @await Html.PartialAsync("Alerts/_Alerts", Model, ViewData)
 </div>
 
-<script src="~/js/InfoBoard/infoboard.js"></script>
+<script src="~/js/InfoBoard/time.js"></script>
 
 
 

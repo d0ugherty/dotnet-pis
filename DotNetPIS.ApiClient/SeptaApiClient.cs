@@ -18,7 +18,7 @@ public class SeptaApiClient : ISeptaApiClient
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"https://www3.septa.org/api/Arrivals/index.php?station={stationName}&results={results}");
 
-        JObject data = await ParseResponse(response);
+        JObject data = JObject.Parse(await response.Content.ReadAsStringAsync());
 
         return data;
     }
@@ -26,6 +26,8 @@ public class SeptaApiClient : ISeptaApiClient
     public async Task<JToken> RegionalRailTrainView()
     {
         HttpResponseMessage response = await _httpClient.GetAsync("https://www3.septa.org/api/TrainView/index.php");
+        
+        response.EnsureSuccessStatusCode();
         
         JToken data = JToken.Parse(await response.Content.ReadAsStringAsync());
         
@@ -36,6 +38,8 @@ public class SeptaApiClient : ISeptaApiClient
     {
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"https://www3.septa.org/api/RRSchedules/index.php?req1={trainNumber}");
+        
+        response.EnsureSuccessStatusCode();
 
         JObject data = await ParseResponse(response);
 
@@ -46,7 +50,9 @@ public class SeptaApiClient : ISeptaApiClient
     {
         HttpResponseMessage response = await _httpClient.GetAsync(
             $"https://www3.septa.org/api/NextToArrive/index.php?req1={startStation}&req2={endStation}&req3={results}");
-
+        
+        response.EnsureSuccessStatusCode();
+        
         JObject data = await ParseResponse(response);
 
         return data;
@@ -56,7 +62,9 @@ public class SeptaApiClient : ISeptaApiClient
     {
         HttpResponseMessage response =
             await _httpClient.GetAsync($"https://www3.septa.org/api/TransitView/index.php?route={routeNumber}");
-
+        
+        response.EnsureSuccessStatusCode();
+        
         JObject data = await ParseResponse(response);
 
         return data;
