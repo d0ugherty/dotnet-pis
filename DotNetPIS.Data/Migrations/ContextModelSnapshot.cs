@@ -202,7 +202,7 @@ namespace DotNetPIS.Data.Migrations
                     b.Property<string>("TextColor")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Type")
+                    b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Url")
@@ -227,8 +227,9 @@ namespace DotNetPIS.Data.Migrations
                     b.Property<int>("Sequence")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ShapeNumber")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ShapeNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<float>("ShapePtLat")
                         .HasColumnType("REAL");
@@ -274,10 +275,10 @@ namespace DotNetPIS.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<float>("Latitude")
+                    b.Property<float?>("Latitude")
                         .HasColumnType("REAL");
 
-                    b.Property<float>("Longitude")
+                    b.Property<float?>("Longitude")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Name")
@@ -367,8 +368,9 @@ namespace DotNetPIS.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("ShapeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ShapeId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ShortName")
                         .HasColumnType("TEXT");

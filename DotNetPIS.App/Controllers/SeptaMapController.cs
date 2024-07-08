@@ -36,6 +36,13 @@ namespace DotNetPIS.App.Controllers
 
             return Json(shapeData);
         }
+
+        public async Task<JsonResult> GetStops(RouteType routeType, string agencyName)
+        {
+            List<Stop> stops = await _mapService.GetStopsByAgencyAndRouteType(agencyName, routeType);
+
+            return Json(stops);
+        }
         
     }
 }

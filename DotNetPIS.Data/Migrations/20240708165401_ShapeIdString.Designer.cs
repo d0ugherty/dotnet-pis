@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetPIS.Data.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20240625232649_TripsnShapes5")]
-    partial class TripsnShapes5
+    [Migration("20240708165401_ShapeIdString")]
+    partial class ShapeIdString
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,7 +205,7 @@ namespace DotNetPIS.Data.Migrations
                     b.Property<string>("TextColor")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Type")
+                    b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Url")
@@ -230,8 +230,9 @@ namespace DotNetPIS.Data.Migrations
                     b.Property<int>("Sequence")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ShapeNumber")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("ShapeNumber")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<float>("ShapePtLat")
                         .HasColumnType("REAL");
@@ -398,9 +399,6 @@ namespace DotNetPIS.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ShapeId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Id")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("TripId", "ShapeId");

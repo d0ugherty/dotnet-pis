@@ -19,7 +19,7 @@ public class Trip
 
     public int DirectionId { get; set; }
 
-    public int? ShapeId { get; set; }
+    public string ShapeId { get; set; }
 
     public List<StopTime> StopTimes { get; set; }
     

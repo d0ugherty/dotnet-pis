@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     displayMapShapes("Rail", "SEPTA");
     
+    displayStopMarkers("Rail", "SEPTA");
+    
     displayTrainMarkers(trainLayer);
     
     setInterval(displayTrainMarkers, 5000, trainLayer);
@@ -79,6 +81,19 @@ function displayTrainMarkers(trainLayer){
                 trainMarker.bindPopup(popup);
             }
         }
-    })
+    });
         
+}
+
+function displayStopMarkers(routeType, agencyName){
+    
+    $.ajax({
+        url:`Map/GetStops?routeType=${routeType}&agencyName=${agencyName}`,
+        method: 'GET',
+        success: function(stops) {
+            for(const stop in stops){
+                console.log(stop);
+            }
+        }
+    })
 }

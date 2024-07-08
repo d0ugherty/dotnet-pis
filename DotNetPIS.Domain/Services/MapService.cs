@@ -9,16 +9,21 @@ namespace DotNetPIS.Domain.Services;
 public class MapService : BaseService
 {
     private readonly IRepository<Trip, int> _tripRepo;
+    private readonly IRepository<Stop, int> _stopRepo;
+    private readonly IRepository<StopTime, int> _stopTimeRepo;
+
     private readonly IRepository<TripShape, string> _tripShapeRepo;
     private readonly IRepository<Route, int> _routeRepo;
     private readonly ISeptaApiClient _septaApiClient;
 
-    public MapService(IRepository<Trip, int> tripRepo, IRepository<TripShape, string> tripShapeRepo, IRepository<Route, int> routeRepo, ISeptaApiClient septaApiClient)
+    public MapService(IRepository<Trip, int> tripRepo, IRepository<TripShape, string> tripShapeRepo, IRepository<Route, int> routeRepo, ISeptaApiClient septaApiClient, IRepository<Stop, int> stopRepo, IRepository<StopTime, int> stopTimeRepo)
     {
         _tripRepo = tripRepo;
         _tripShapeRepo = tripShapeRepo;
         _routeRepo = routeRepo;
         _septaApiClient = septaApiClient;
+        _stopRepo = stopRepo;
+        _stopTimeRepo = stopTimeRepo;
     }
     
     public async Task<List<Shape>> GetShapesByRoute(int routeId)
@@ -33,6 +38,33 @@ public class MapService : BaseService
             .ToListAsync();
         
         return shapes;
+    }
+
+    public Task<List<Stop>> GetStopsByAgencyAndRouteType(string agencyName, RouteType routeType)
+    {
+        List<Stop> routeStops = new List<Stop>();
+        
+        var routes = _routeRepo.GetAll()
+            .Include(route => route.Trips)
+            .Where(route => route.Agency != null 
+                            && route.Agency.Name.Equals(agencyName)
+                            && route.Type == (int)routeType);
+
+        foreach (var route in routes)
+        {
+            var trip = route.Trips.First();
+
+            var stops = trip.StopTimes.Select(st => st.Stop).ToList();
+
+            foreach (var stop in stops)
+            {
+                Console.WriteLine(stop.Name);
+            }
+            
+            routeStops.AddRange(stops);
+        }
+
+        return Task.FromResult(routeStops);
     }
 
     public async Task<Dictionary<string, List<Shape>>> GetShapeData(RouteType routeType, string agencyName)
