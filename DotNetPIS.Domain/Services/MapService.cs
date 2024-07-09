@@ -50,11 +50,6 @@ public class MapService : BaseService
             var trip = route.Trips.First();
 
             var stops = trip.StopTimes.Select(st => st.Stop).ToList();
-
-            foreach (var stop in stops)
-            {
-                Console.WriteLine(stop.Name);
-            }
             
             routeStops.AddRange(stops);
         }
