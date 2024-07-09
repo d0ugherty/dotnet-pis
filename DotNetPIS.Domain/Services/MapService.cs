@@ -9,9 +9,6 @@ namespace DotNetPIS.Domain.Services;
 public class MapService : BaseService
 {
     private readonly IRepository<Trip, int> _tripRepo;
-    private readonly IRepository<Stop, int> _stopRepo;
-    private readonly IRepository<StopTime, int> _stopTimeRepo;
-
     private readonly IRepository<TripShape, string> _tripShapeRepo;
     private readonly IRepository<Route, int> _routeRepo;
     private readonly ISeptaApiClient _septaApiClient;
@@ -22,8 +19,6 @@ public class MapService : BaseService
         _tripShapeRepo = tripShapeRepo;
         _routeRepo = routeRepo;
         _septaApiClient = septaApiClient;
-        _stopRepo = stopRepo;
-        _stopTimeRepo = stopTimeRepo;
     }
     
     public async Task<List<Shape>> GetShapesByRoute(int routeId)
