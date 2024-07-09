@@ -47,8 +47,11 @@ public class AlertService : BaseService
 
         List<Route> stopRoutes = await _stopTimeRepo.GetAll()
             .Where(stopTime => stopTime.StopId == septaStop.Id)
+            .Include(stopTime => stopTime.Trip)
+            .ThenInclude(trip => trip.Route)
             .GroupBy(stopTime => stopTime.Trip.RouteId)
             .Select(group => group.First().Trip.Route)
+            .Distinct()
             .ToListAsync();
         
         foreach (var route in stopRoutes)
@@ -109,7 +112,7 @@ public class AlertService : BaseService
 
     /**
     *  Because the route ID inputs don't match their GTFS data
-    *
+    *z
     */
     private string ToSeptaRouteAlertId(string routeId)
     {
