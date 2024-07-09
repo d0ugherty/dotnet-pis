@@ -6,7 +6,7 @@
         @await Html.PartialAsync("InfoBoard/_Header")
     </thead>
     <tbody id="tbl-body-arrivals"
-           hx-get="/InfoBoard/UpdateBoard?stopId=@Model.StopId"
+           hx-get="/InfoBoard/Update/@Model.StopId"
            hx-trigger="every 5s"
            hx-swap="innerHTML"
            hx-target="#tbl-body-arrivals">

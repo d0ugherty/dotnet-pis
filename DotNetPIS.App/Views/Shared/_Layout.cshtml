@@ -27,7 +27,9 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="InfoBoard" asp-action="Index">Train Information</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="InfoBoard" asp-action="Index"
+                               asp-route-agencyName="SEPTA"
+                               asp-route-stopId="6">Train Information</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Real-Time Map</a>

@@ -20,29 +20,29 @@ namespace DotNetPIS.App.Controllers
             _alertService = alertService;
         }
         
-        [HttpGet]
-        public async Task<ActionResult> Index(int stopId = 14087)
+        [HttpGet("InfoBoard")]
+        public async Task<ActionResult> Index(string agency, int stopId)
         {
-            InfoBoardViewModel viewModel = await RenderBoard(stopId);
+            InfoBoardViewModel viewModel = await RenderBoard(agency, stopId);
             
             return View(viewModel);
         }
 
-        [HttpGet]
-        public async Task<ActionResult> UpdateBoard(int stopId)
+        [HttpGet("InfoBoard/Update/{stopId}")]
+        public async Task<ActionResult> UpdateBoard(string agencyName, int stopId)
         {
-            InfoBoardViewModel viewModel = await RenderBoard(stopId);
+            InfoBoardViewModel viewModel = await RenderBoard(agencyName, stopId);
             
             return PartialView("InfoBoard/_Rows", viewModel);
         }
 
-        private async Task<InfoBoardViewModel> RenderBoard(int stopId)
+        private async Task<InfoBoardViewModel> RenderBoard(string agencyName, int stopId)
         {
+            List<RouteAlert> routeAlerts = await _alertService.GetSeptaStopAlerts(stopId);
+         
             Stop stop = await _stopService.GetStopById(stopId);
             
-            List<RouteAlert> routeAlerts = await _alertService.GetSeptaStopAlerts(stopId);
-            
-            List<SelectListItem> stops = await _stopService.GetStopSelectList("SEPTA", RouteType.Rail);
+            List<SelectListItem> stops = await _stopService.GetStopSelectList(agencyName, RouteType.Rail);
             
             string stopName = _infoBoardService.GtfsNameToApiName(stop.Name);
         
@@ -51,6 +51,7 @@ namespace DotNetPIS.App.Controllers
             var viewModel = new InfoBoardViewModel
             {
                 Title = $"Train Information for {stopName}",
+                AgencyName = agencyName,
                 StationName = stopName,
                 StopId = stopId,
                 Arrivals = arrivals,

@@ -43,4 +43,13 @@ public class StopService
     {
         return await Task.FromResult(_stopRepo.GetById(id));
     }
+
+    public async Task<Stop> GetStopByNameAndAgency(string stationName, string agencyName)
+    {
+        Stop stop = await _stopRepo.GetAll()
+            .FirstOrDefaultAsync(stop => stop.Name.Equals(stationName) && stop.Source.Name.Equals(agencyName)) 
+                    ?? throw new InvalidOperationException($"No Stop entity found with name {stationName} and Source.Name {agencyName}");
+
+        return stop;
+    }
 }
