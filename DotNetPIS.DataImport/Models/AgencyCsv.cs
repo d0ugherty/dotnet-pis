@@ -1,4 +1,4 @@
-namespace DataImport.Models;
+namespace DotNetPIS.DataImport.Models;
 
 public class AgencyCsv
 {

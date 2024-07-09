@@ -1,8 +1,8 @@
 using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
-using DataImport.Models;
 using DotNetPIS.Data;
+using DotNetPIS.DataImport.Models;
 using DotNetPIS.Domain.Models.GTFS;
 using Calendar = DotNetPIS.Domain.Models.GTFS.Calendar;
 
