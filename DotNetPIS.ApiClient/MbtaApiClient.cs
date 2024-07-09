@@ -23,6 +23,11 @@ public class MbtaApiClient
 
     public async Task<JToken> GetShapes(string routeId)
     {
+        HttpResponseMessage response =
+            await _httpClient.GetAsync($"https://api-v3.mbta.com/shapes?filter%5Broute%5D={routeId}");
         
+        JToken data = JToken.Parse(await response.Content.ReadAsStringAsync());
+
+        return data;
     }
 }
