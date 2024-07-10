@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using DotNetPIS.App.Models;
+using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Services;
 
 namespace DotNetPIS.App.Controllers;
@@ -8,22 +9,29 @@ namespace DotNetPIS.App.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly AlertService _alertService;
+    private readonly HomeService _homeService;
 
-    public HomeController(ILogger<HomeController> logger, AlertService alertService)
+    public HomeController(ILogger<HomeController> logger, HomeService homeService)
     {
         _logger = logger;
-        _alertService = alertService;
+        _homeService = homeService;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         var viewModel = new HomeViewModel
         {
-            SeptaAlerts = await _alertService.GetAllSeptaAlerts()
+            InfoSources = _homeService.GetInfoSources()
         };
         
         return View(viewModel);
+    }
+
+    public IActionResult AgencyHome(int sourceId, HomeViewModel viewModel)
+    {
+        viewModel.SelectedSource = _homeService.GetSourceById(sourceId);
+        
+        return View("AgencyHome", viewModel);
     }
 
     public IActionResult Privacy()

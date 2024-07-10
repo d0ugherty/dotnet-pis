@@ -27,7 +27,7 @@ namespace DotNetPIS.App.Controllers
             
             return View(viewModel);
         }
-
+        
         [HttpGet("InfoBoard/Update/{stopId}")]
         public async Task<ActionResult> UpdateBoard(string agencyName, int stopId)
         {

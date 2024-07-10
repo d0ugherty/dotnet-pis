@@ -1,8 +1,8 @@
 @model InfoBoardViewModel
 
-<form id="selectForm" method="get" asp-controller="InfoBoard" asp-action="Index" asp-route-agencyName="@Model.AgencyName" asp-route-stopId="@Model.StopId">
+<form id="selectForm" method="get" asp-controller="InfoBoard" asp-action="Index" asp-route-agency="@Model.AgencyName" asp-route-stopId="@Model.StopId">
     
-    <input type="hidden" name="agencyName" asp-for="@Model.AgencyName" value="@Model.AgencyName"/>
+    <input type="hidden" name="agency" asp-for="@Model.AgencyName" value="@Model.AgencyName"/>
 
     <select name="stopId" id="stop-slct" asp-for="@Model.StopId" asp-items="@Model.Stops">
     </select>

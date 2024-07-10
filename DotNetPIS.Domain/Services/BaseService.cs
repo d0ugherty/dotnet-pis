@@ -54,9 +54,9 @@ public abstract class BaseService
         return true;
     }
 
-    protected string DecodeHtmlString(JToken token, string input)
+    protected string DecodeHtmlString(JToken token, string propertyName)
     {
-        string parsedString = ParseStringValue(token, input);
+        string parsedString = ParseStringValue(token, propertyName);
         
         return HttpUtility.HtmlDecode(parsedString);
     }

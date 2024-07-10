@@ -1,0 +1,12 @@
+@model HomeViewModel
+
+<form id="agencyForm" asp-controller="Home" asp-action="AgencyHome">
+    
+    @foreach (var infoSource in Model.InfoSources)
+    {
+        <button id="agency-button" class="btn-success" type="submit" name="sourceId" value="@infoSource.Id">
+            @infoSource.Name
+        </button>
+    }
+
+</form>

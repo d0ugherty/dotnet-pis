@@ -1,0 +1,13 @@
+@model HomeViewModel
+
+@{ var infoSource = Model.SelectedSource; }
+
+@if (infoSource != null && infoSource.HasMap)
+{
+    <p> MAP TEST </p>
+}
+
+@if (infoSource != null && infoSource.HasInfoBoard)
+{
+    <p> INFOBOARD TEST </p>
+}
