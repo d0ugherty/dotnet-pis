@@ -1,6 +1,4 @@
-using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Models.SEPTA;
-using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DotNetPIS.App.Models;
 
@@ -9,8 +7,19 @@ public class InfoBoardViewModel
     public string Title { get; set; } = null!;
     public string StationName { get; set; } = null!;
     public string AgencyName { get; set; } = null!;
-    public List<Arrival> Arrivals { get; set; } = new List<Arrival>();
-    public List<SelectListItem>? Stops { get; set; }
+    
     public int StopId { get; set; }
-    public List<RouteAlert> SeptaAlerts { get; set; } = new List<RouteAlert>();
+    
+    public List<Arrival> Arrivals { get; set; }
+    //public List<SelectListItem>? Stops { get; set; }
+    public List<RouteAlert> SeptaAlerts { get; set; }
+    
+    public StopSelectViewModel StopSelectViewModel { get; set; }
+
+    public InfoBoardViewModel()
+    {
+        Arrivals =  new List<Arrival>();
+       // Stops = new List<SelectListItem>();
+        SeptaAlerts = new List<RouteAlert>();
+    }
 }
