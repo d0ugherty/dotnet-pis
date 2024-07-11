@@ -4,10 +4,21 @@
 
 @if (infoSource != null && infoSource.HasMap)
 {
-    <p> MAP TEST </p>
+    <button class="btn-dark">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Real-Time Map</a>
+    </button>
 }
 
 @if (infoSource != null && infoSource.HasInfoBoard)
 {
-    <p> INFOBOARD TEST </p>
+    <button class="btn-dark">
+        <a class="nav-link text-dark" asp-area="" asp-controller="InfoBoard" asp-action="Index"
+           asp-route-agency=@infoSource.Name
+           asp-route-stopId=@infoSource.DefaultStopId>Train Information</a>
+    </button>
+}
+
+@if (infoSource != null && infoSource.HasNextToArrive)
+{
+    <p>NEXT TO ARRIVE TEST</p>
 }
