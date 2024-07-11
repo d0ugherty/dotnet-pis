@@ -16,7 +16,7 @@ namespace DotNetPIS.App.Controllers
         }
         
         [HttpGet("Map")]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string agencyName)
         {
             return View();
         }

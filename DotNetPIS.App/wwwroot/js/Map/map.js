@@ -9,11 +9,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     initializeMap(39.9628399, -75.148437);
     
-    displayMapShapes("Rail", "SEPTA");
+    const container = document.getElementById('map');
+
+    const infoSource = container.getAttribute('info-source');
+    const routeType = container.getAttribute('route-type');
     
-    displayStopMarkers("Rail", "SEPTA");
+    displayMapShapes(routeType, infoSource);
     
-    displayTrainMarkers(trainLayer);
+    displayStopMarkers(routeType, infoSource);
+    
+    displayTrainMarkers(trainLayer, infoSource);
     
     setInterval(displayTrainMarkers, 5000, trainLayer);
 });
@@ -55,13 +60,13 @@ function displayMapShapes(routeType, agencyName) {
     });
 }
 
-function displayTrainMarkers(trainLayer){
+function displayTrainMarkers(trainLayer, infoSource){
     trainLayer.clearLayers();
     
     trainLayer.addTo(map);
     
     $.ajax({
-        url: `Map/GetTrainData/`,
+        url: `Map/GetTrainData?agencyName=${infoSource}`,
         method: 'GET',
         success: function(trainData) {
             
