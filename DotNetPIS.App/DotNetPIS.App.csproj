@@ -21,6 +21,10 @@
     <Folder Include="Views\InfoBoard\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AdditionalFiles Include="Views\Home\_AgencyHome.cshtml" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>

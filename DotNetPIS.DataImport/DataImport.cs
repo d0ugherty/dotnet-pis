@@ -1,8 +1,8 @@
 using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
-using DataImport.Models;
 using DotNetPIS.Data;
+using DotNetPIS.DataImport.Models;
 using DotNetPIS.Domain.Models.GTFS;
 using Calendar = DotNetPIS.Domain.Models.GTFS.Calendar;
 
@@ -417,7 +417,7 @@ public class DataImport
                 _context.StopTimes.Add(stopTime);
 
                 stop.StopTimes.Add(stopTime);
-                trip.StopTimes!.Add(stopTime);
+                trip.StopTimes.Add(stopTime);
 
                 row++;
             }
@@ -495,7 +495,7 @@ public class DataImport
         {
             Console.Write($"{new string(' ', 20)}Importing row {row}\r");
             
-            List<Trip> trips = _context.Trips.Where(t => t.ShapeId == shape.ShapeNumber).ToList();
+            List<Trip> trips = _context.Trips.Where(t => t.ShapeId.Equals(shape.ShapeNumber)).ToList();
 
             foreach (var trip in trips)
             {

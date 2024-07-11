@@ -9,6 +9,12 @@ public class Source
     public List<Agency> Agencies { get; set; }
     public List<Calendar> Calendars { get; set; }
 
+    public bool HasMap { get; set; }
+    public bool HasInfoBoard { get; set; }
+    public bool HasNextToArrive { get; set; }
+
+    public int? DefaultStopId { get; set; }
+    
     public Source()
     {
         Agencies = new List<Agency>();

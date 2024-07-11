@@ -6,8 +6,9 @@ namespace DotNetPIS.App.Models;
 
 public class InfoBoardViewModel
 {
-    public string Title { get; set; }
-    public string StationName { get; set; }
+    public string Title { get; set; } = null!;
+    public string StationName { get; set; } = null!;
+    public string AgencyName { get; set; } = null!;
     public List<Arrival> Arrivals { get; set; } = new List<Arrival>();
     public List<SelectListItem>? Stops { get; set; }
     public int StopId { get; set; }

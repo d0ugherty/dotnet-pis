@@ -1,5 +1,6 @@
 using System.Text;
 using System.Web;
+using DotNetPIS.Domain.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace DotNetPIS.Domain.Services;
@@ -53,9 +54,9 @@ public abstract class BaseService
         return true;
     }
 
-    protected string DecodeHtmlString(JToken token, string input)
+    protected string DecodeHtmlString(JToken token, string propertyName)
     {
-        string parsedString = ParseStringValue(token, input);
+        string parsedString = ParseStringValue(token, propertyName);
         
         return HttpUtility.HtmlDecode(parsedString);
     }

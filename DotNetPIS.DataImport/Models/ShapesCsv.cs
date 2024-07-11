@@ -1,8 +1,8 @@
-namespace DataImport.Models;
+namespace DotNetPIS.DataImport.Models;
 
 public class ShapesCsv
 {
-    public int shape_id { get; set; }
+    public string shape_id { get; set; } = null!;
     public float shape_pt_lat { get; set; }
     public float shape_pt_lon { get; set; }
     public int shape_pt_sequence { get; set; }

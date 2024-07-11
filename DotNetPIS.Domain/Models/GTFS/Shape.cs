@@ -6,7 +6,7 @@ public class Shape
 {
     public int Id { get; set; }
 
-    public int ShapeNumber { get; set; }
+    public string ShapeNumber { get; set; } = null!;
 
     public float ShapePtLat { get; set; }
 

@@ -1,9 +1,7 @@
-using DotNetPIS.App.Models;
 using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Models.SEPTA;
 using DotNetPIS.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using Route = DotNetPIS.Domain.Models.GTFS.Route;
 
 namespace DotNetPIS.App.Controllers
 {
@@ -23,11 +21,16 @@ namespace DotNetPIS.App.Controllers
             return View();
         }
         
-        public async Task<JsonResult> GetTrainData()
+        public async Task<JsonResult> GetTrainData(string agencyName)
         {
-            List<TrainView> trainData = await _mapService.GetTrainView();
-
-            return Json(trainData);
+            if (agencyName.Equals("SEPTA"))
+            { 
+                List<TrainView> trainData  = await _mapService.GetTrainView();
+                
+                return Json(trainData);
+            }
+            
+            throw new InvalidOperationException($"Invalid agency name {agencyName}.");
         }
         
         public async Task<JsonResult> GetShapeData(RouteType routeType, string agencyName)
@@ -35,6 +38,13 @@ namespace DotNetPIS.App.Controllers
             Dictionary<string, List<Shape>> shapeData = await _mapService.GetShapeData(routeType, agencyName);
 
             return Json(shapeData);
+        }
+
+        public async Task<JsonResult> GetStops(RouteType routeType, string agencyName)
+        {
+            List<Stop> stops = await _mapService.GetStopsByAgencyAndRouteType(agencyName, routeType);
+
+            return Json(stops);
         }
         
     }
