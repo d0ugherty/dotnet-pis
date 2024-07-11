@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace DotNetPIS.App.Models;
+namespace DotNetPIS.App.Models.Components;
 
 public class StopSelectViewModel
 {

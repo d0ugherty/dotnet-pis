@@ -1,15 +1,17 @@
+@using DotNetPIS.Domain.Models.GTFS
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model HomeViewModel
 
-@{ var infoSource = Model.SelectedSource; }
+@{ Source infoSource = Model.SelectedSource ?? throw new InvalidOperationException($"GTFS Data source is null"); }
 
-@if (infoSource != null && infoSource.HasMap)
+@if (infoSource.HasMap)
 {
     <button class="btn-dark">
         <a class="nav-link text-dark" asp-area="" asp-controller="Map" asp-action="Index">Real-Time Map</a>
     </button>
 }
 
-@if (infoSource != null && infoSource.HasInfoBoard)
+@if (infoSource.HasInfoBoard)
 {
     <button class="btn-dark">
         <a class="nav-link text-dark" asp-area="" asp-controller="InfoBoard" asp-action="Index"
@@ -18,7 +20,7 @@
     </button>
 }
 
-@if (infoSource != null && infoSource.HasNextToArrive)
+@if (infoSource.HasNextToArrive)
 {
     <p>NEXT TO ARRIVE TEST</p>
 }

@@ -1,3 +1,4 @@
+using DotNetPIS.App.Models.Components;
 using DotNetPIS.Domain.Models.SEPTA;
 
 namespace DotNetPIS.App.Models;
@@ -11,15 +12,13 @@ public class InfoBoardViewModel
     public int StopId { get; set; }
     
     public List<Arrival> Arrivals { get; set; }
-    //public List<SelectListItem>? Stops { get; set; }
-    public List<RouteAlert> SeptaAlerts { get; set; }
     
     public StopSelectViewModel StopSelectViewModel { get; set; }
+    
+    public AlertsViewModel AlertsViewModel { get; set; }
 
     public InfoBoardViewModel()
     {
         Arrivals =  new List<Arrival>();
-       // Stops = new List<SelectListItem>();
-        SeptaAlerts = new List<RouteAlert>();
     }
 }

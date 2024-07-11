@@ -1,8 +1,14 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model DotNetPIS.App.Models.Components.AlertsViewModel
+
 <link rel="stylesheet" href="~/css/Alerts/alerts.css" asp-append-version="true" />
 
-@foreach (var alert in @Model.SeptaAlerts)
+@if (Model.AgencyName.Equals("SEPTA"))
 {
-    <div id="alert">
-        @Html.Raw(alert.AdvisoryMessage)
-    </div>
+    @foreach (var alert in @Model.SeptaAlerts)
+    {
+        <div id="alert">
+            @Html.Raw(alert.AdvisoryMessage)
+        </div>
+    }
 }

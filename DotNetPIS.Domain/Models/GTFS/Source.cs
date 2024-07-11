@@ -13,7 +13,7 @@ public class Source
     public bool HasInfoBoard { get; set; }
     public bool HasNextToArrive { get; set; }
 
-    public int? DefaultStopId { get; set; }
+    public int DefaultStopId { get; set; }
     
     public Source()
     {

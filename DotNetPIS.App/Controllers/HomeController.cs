@@ -1,7 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using DotNetPIS.App.Models;
-using DotNetPIS.Domain.Models.GTFS;
 using DotNetPIS.Domain.Services;
 
 namespace DotNetPIS.App.Controllers;
@@ -10,7 +9,7 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly HomeService _homeService;
-
+    
     public HomeController(ILogger<HomeController> logger, HomeService homeService)
     {
         _logger = logger;
@@ -33,7 +32,7 @@ public class HomeController : Controller
         
         return View("AgencyHome", viewModel);
     }
-
+    
     public IActionResult Privacy()
     {
         return View();
